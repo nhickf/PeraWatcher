@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "612932016883",
+    "project_id": "perawatcher",
+    "storage_bucket": "perawatcher.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612932016883:android:38f1f5537f631e62dd7586",
+        "android_client_info": {
+          "package_name": "com.creativegrpcx.perawatcher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612932016883-e7khhibp2d7lokr0j851aqfbie3l0e3c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.creativegrpcx.perawatcher",
+            "certificate_hash": "5dd5088c8fa3b786abde0eb42f2e68cf1efed49b"
+          }
+        },
+        {
+          "client_id": "612932016883-pf7nrjahd2ifan1mkh7h0tgq66f82572.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE-hu4xd7ICRQD9MX4wyahGmsOq2tSnEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612932016883-pf7nrjahd2ifan1mkh7h0tgq66f82572.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_dashboard_24"
+        android:title="Dashboard"/>
+    <item
+        android:id="@+id/statisticsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_show_chart_24"
+        android:title="Statistics"/>
+
+    <item
+        android:id="@+id/historyFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="History"/>
+
+    <item
+        android:id="@+id/walletFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_account_balance_wallet_24"
+        android:title="Wallet"/>
+</menu>

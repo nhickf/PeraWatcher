@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/last_transaction_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Transactions"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:fontFamily="@font/poppins_medium"  />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_history_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="16dp"
+        tools:listitem="@layout/recyclerview_transaction_item_layout"
+        />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
