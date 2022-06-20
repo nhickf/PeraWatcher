@@ -49,7 +49,7 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
                     includeBinding.transactionTime.editText?.text.toString()
                 )
             )
-            finish()
+            closeActivity()
         }
 
         includeBinding.transactionDate.editText?.setOnClickListener {
@@ -59,7 +59,7 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
             TimePickerFragment(this).show(supportFragmentManager, "TimePicker")
         }
         binding.topAppBar.setNavigationOnClickListener {
-            finish()
+            closeActivity()
         }
     }
 
@@ -90,5 +90,10 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
         includeBinding.transactionTime.editText?.text = editable(time.formattedTime)
 
     }
+
+    private fun closeActivity(){
+        finish()
+    }
+
 
 }

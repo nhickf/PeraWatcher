@@ -2,9 +2,10 @@ package com.creativegrpcx.perawatcher.wallet
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import com.creativegrpcx.perawatcher.BaseActivity
-import com.creativegrpcx.perawatcher.MainApplication
+import com.creativegrpcx.perawatcher.R
 import com.creativegrpcx.perawatcher.databinding.ActivityAddWalletBinding
 import com.creativegrpcx.perawatcher.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.types.WalletType
@@ -18,13 +19,14 @@ class AddWalletActivity : BaseActivity() {
         globalViewModelFactory
     }
 
+    lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddWalletBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.topAppBar.setNavigationOnClickListener {
-            finish()
+            closeActivity()
         }
 
         binding.transactionAddButton.setOnClickListener {
@@ -36,6 +38,7 @@ class AddWalletActivity : BaseActivity() {
                     isEnabled = false, isPrimary = false
                 )
             )
+            closeActivity()
         }
     }
 
@@ -47,6 +50,10 @@ class AddWalletActivity : BaseActivity() {
             else -> WalletType.OTHERS
         }
 
+    }
+
+    private fun closeActivity(){
+        finish()
     }
 
 }
