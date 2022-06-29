@@ -6,6 +6,53 @@
     android:layout_height="match_parent"
     >
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/dashboard_user_image"
+        android:layout_width="45dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/dashboard_header"
+        app:layout_constraintBottom_toBottomOf="@id/dashboard_header"
+        app:layout_constraintEnd_toStartOf="@id/dashboard_header"
+        app:srcCompat="@drawable/boy_image"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/dashboard_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dashboard_user_image"
+        app:layout_constraintBottom_toTopOf="@id/dashboard_recycler_view_money"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
+
+        >
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dashboard_header_greetings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome back"
+            android:textSize="12sp"
+            app:fontFamily="@font/poppins_medium"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dashboard_header_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:fontFamily="@font/poppins_medium"
+            android:text="Nhick Flores"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/dashboard_add_transaction"
         android:layout_width="wrap_content"
@@ -13,17 +60,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_baseline_bill_add_24"/>
+        app:srcCompat="@drawable/ic_baseline_bill_add_24"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dashboard_recycler_view_money"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dashboard_header"
+        app:layout_constraintBottom_toTopOf="@+id/last_transaction_text_view"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 
@@ -48,7 +95,7 @@
         android:text="more"
         android:textAlignment="textEnd"
         android:textSize="12sp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="8dp"
         app:fontFamily="@font/poppins_family"
         app:layout_constraintBottom_toTopOf="@+id/fragment_dashboard_recycler_view"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +106,7 @@
         android:id="@+id/fragment_dashboard_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

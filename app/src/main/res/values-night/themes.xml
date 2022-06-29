@@ -28,14 +28,9 @@
         <item name="colorOutline">@color/md_theme_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
-        <item name="colorInversePrimary">@color/md_theme_dark_inversePrimary</item>
-        <item name="colorShadow">@color/md_theme_dark_shadow</item>
-        <item name="colorColor9">#84cfff</item>
-        <item name="colorOnColor9">#00344d</item>
-        <item name="colorColor9Container">#004c6e</item>
-        <item name="colorOnColor9Container">#c7e7ff</item>
-        <item name="harmonizeColor9">true</item>
-        <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
+<!--        <item name="colorSurfaceTint">@color/md_theme_dark_surfaceTint</item>-->
+<!--        <item name="colorSurfaceTintColor">@color/md_theme_dark_surfaceTintColor</item>-->
+        <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
     </style>
 
     <style name="Custom.Chip" parent="Widget.Material3.Chip.Filter">

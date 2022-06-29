@@ -47,6 +47,10 @@ class DashboardItemRecyclerViewAdapter : ListAdapter<Transaction,DashboardItemRe
         return currentList.size
     }
 
+    override fun submitList(list: MutableList<Transaction>?) {
+        super.submitList(list?.sortedByDescending { transaction -> "${transaction.date} ${transaction.time}" })
+    }
+
     private fun translateCategories (category: CategoryType) : Int{
         return when(category){
             CategoryType.Appliance -> R.drawable.baseline_coffee_maker_24

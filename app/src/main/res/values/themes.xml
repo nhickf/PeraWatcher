@@ -28,14 +28,9 @@
         <item name="colorOutline">@color/md_theme_light_outline</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
-        <item name="colorInversePrimary">@color/md_theme_light_inversePrimary</item>
-        <item name="colorShadow">@color/md_theme_light_shadow</item>
-        <item name="colorColor9">#006591</item>
-        <item name="colorOnColor9">#ffffff</item>
-        <item name="colorColor9Container">#c7e7ff</item>
-        <item name="colorOnColor9Container">#001e2f</item>
-        <item name="harmonizeColor9">true</item>
-        <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
+<!--        <item name="colorSurfaceTint">@color/md_theme_light_surfaceTint</item>-->
+<!--        <item name="colorSurfaceTintColor">@color/md_theme_light_surfaceTintColor</item>-->
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
 <!--    <style name="Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">-->
