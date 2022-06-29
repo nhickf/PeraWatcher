@@ -13,6 +13,7 @@ import com.creativegrpcx.perawatcher.MainApplication
 import com.creativegrpcx.perawatcher.dashboard.DashboardItemRecyclerViewAdapter
 import com.creativegrpcx.perawatcher.data.DataAdapter
 import com.creativegrpcx.perawatcher.databinding.FragmentHistoryBinding
+import com.creativegrpcx.perawatcher.repository.entities.SectionedTransaction
 import com.creativegrpcx.perawatcher.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.types.CategoryType
 import com.creativegrpcx.perawatcher.viewmodel.GlobalViewModel
@@ -65,17 +66,19 @@ class HistoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        globalViewModel.loadTransactions()
+        val adapter = DashboardItemSectionRecyclerViewAdapter()
+
+        globalViewModel.loadSectionTransactions()
 
         binding.let { history->
             history.fragmentHistoryRecyclerView.let {
-                it.adapter = adapter.item
+                it.adapter = adapter
                 it.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             }
         }
 
-        globalViewModel.uiStateTransaction.asLiveData().observe(viewLifecycleOwner) {
-            adapter.item.submitList(it as ArrayList<Transaction>)
+        globalViewModel.uiStateSectionedTransaction.asLiveData().observe(viewLifecycleOwner) {
+            adapter.submitList(it as ArrayList<SectionedTransaction>)
         }
 
     }
