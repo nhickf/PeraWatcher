@@ -1,5 +1,6 @@
 package com.creativegrpcx.perawatcher
 
+import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -49,6 +50,27 @@ class MainActivity : BaseActivity() {
             }
 
         }
+
+        checkRequestedPermission(Manifest.permission.READ_EXTERNAL_STORAGE, object : ActivityRuntimePermissionCallback{
+            override fun onPermissionGranted(permission: String) {
+                // do nothing
+                Log.d("checkRequestedPermission", "onPermissionAlreadyGranted")
+            }
+
+            override fun onPermissionAlreadyGranted() {
+                // do nothing
+                Log.d("checkRequestedPermission", "onPermissionAlreadyGranted")
+            }
+
+            override fun onPermissionDenied() {
+                Log.d("checkRequestedPermission", "onPermissionDenied")
+            }
+
+            override fun onPermissionShowRationale() {
+                Log.d("checkRequestedPermission", "onPermissionShowRationale")
+            }
+
+        })
     }
 
 }
