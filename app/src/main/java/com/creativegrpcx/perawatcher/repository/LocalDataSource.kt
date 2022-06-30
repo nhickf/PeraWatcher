@@ -42,10 +42,12 @@ class LocalDataSource @Inject constructor(private val defaultDispatcher: Corouti
 
     fun getTransactions(vararg categories: CategoryType): Flow<List<Transaction>>{
         val allTransaction : Flow<List<Transaction>> = transactionDao.getAllTransactions()
-        if (categories.isEmpty()){
-            return allTransaction
+        return allTransaction.map { transactions ->
+            if (categories.isNotEmpty()){
+                return@map transactions.filter { transaction -> categories.contains(transaction.category) }
+            }
+            transactions
         }
-        return allTransaction.map { list: List<Transaction> -> list.filter { transaction -> categories.contains(transaction.category) } }
     }
 
     //Wallet

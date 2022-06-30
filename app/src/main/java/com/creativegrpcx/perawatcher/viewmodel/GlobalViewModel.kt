@@ -8,6 +8,7 @@ import com.creativegrpcx.perawatcher.repository.UserRepository
 import com.creativegrpcx.perawatcher.repository.entities.SectionedTransaction
 import com.creativegrpcx.perawatcher.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.types.CategoryType
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -21,14 +22,13 @@ class GlobalViewModel @Inject constructor(
     private val _uiStateTransaction = MutableStateFlow<List<Transaction>>(arrayListOf())
     private val _uiStateSectionTransaction =
         MutableStateFlow<List<SectionedTransaction>>(arrayListOf())
-    val uiStateTransaction: StateFlow<List<Transaction>> = _uiStateTransaction
-    val uiStateSectionedTransaction: StateFlow<List<SectionedTransaction?>> = _uiStateSectionTransaction
-
-//    private val _uiStateSpecificTransaction = MutableStateFlow<List<Transaction>>(arrayListOf())
-//    val uiStateSpecificTransaction: StateFlow<List<Transaction>> = _uiStateSpecificTransaction
-
     private val _uiStateWallet = MutableStateFlow<List<Wallet>>(arrayListOf())
-    val uiStateWallet: StateFlow<List<Wallet>> = _uiStateWallet
+
+
+    //public flow
+    val uiStateTransaction = _uiStateTransaction.asStateFlow()
+    val uiStateSectionedTransaction = _uiStateSectionTransaction.asStateFlow()
+    val uiStateWallet = _uiStateWallet.asStateFlow()
 
     fun loadTransactions(vararg categories: CategoryType) {
         viewModelScope.launch {
