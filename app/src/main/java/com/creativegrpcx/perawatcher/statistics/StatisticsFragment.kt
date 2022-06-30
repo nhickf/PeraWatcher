@@ -15,6 +15,7 @@ import com.creativegrpcx.perawatcher.viewmodel.GlobalViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAStyle
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +29,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 
-private var _binding : FragmentStatisticsBinding? = null
+private var _binding: FragmentStatisticsBinding? = null
 private val binding get() = _binding!!
 
 class StatisticsFragment : BaseFragment() {
@@ -53,42 +54,38 @@ class StatisticsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentStatisticsBinding.inflate(inflater,container,false)
+        _binding = FragmentStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val elements = arrayListOf<AASeriesElement>()
 
-//        globalViewModel.loadSpecificTransaction()
 
-        globalViewModel.uiStateTransaction.asLiveData().observe(viewLifecycleOwner) {
+        globalViewModel.loadSectionTransactions()
 
+        globalViewModel.uiStateSectionedTransaction.asLiveData().observe(viewLifecycleOwner) { sections ->
+
+             elements.addAll( sections.map { sec ->
+                AASeriesElement()
+                    .name(sec.sectionType.name)
+                    .data(
+                        arrayOf(sec.sectionItems.size)
+                    )
+            })
+
+            val aaChartModel = AAChartModel()
+                .chartType(AAChartType.Pie)
+                .dataLabelsEnabled(true)
+                .series(elements.toTypedArray())
+
+            binding.fragmentStatisticsChartView.aa_drawChartWithChartModel(aaChartModel)
+
+//            binding.fragmentStatisticsChartView.aa_onlyRefreshTheChartDataWithChartOptionsSeriesArray(elements.toTypedArray())
         }
 
-        val aaChartModel : AAChartModel = AAChartModel()
-            .chartType(AAChartType.Bar)
-            .dataLabelsEnabled(true)
-            .categories(arrayOf("Java", "Swift", "Python", "Ruby", "PHP", "Go", "C", "C#", "C++"))
-            .series(arrayOf(
-                AASeriesElement()
-                    .name("Tokyo")
-                    .data(arrayOf(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3 )),
-                AASeriesElement()
-                    .name("NewYork")
-                    .data(arrayOf(0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1 )),
-                AASeriesElement()
-                    .name("London")
-                    .data(arrayOf(0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0)),
-                AASeriesElement()
-                    .name("Berlin")
-                    .data(arrayOf(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3)))
-            )
-
-        binding.fragmentStatisticsChartView.aa_drawChartWithChartModel(aaChartModel)
     }
-
-
 
 
     companion object {
