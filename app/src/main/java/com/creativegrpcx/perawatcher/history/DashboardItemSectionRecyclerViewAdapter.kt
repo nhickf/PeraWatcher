@@ -30,6 +30,7 @@ class DashboardItemSectionRecyclerViewAdapter : ListAdapter<SectionedTransaction
         val itemAdapter = DashboardItemRecyclerViewAdapter()
         viewSection.itemSectionChip.let {
             it.text = section.sectionType.name
+//            it.chipIcon = (ResourcesCompat.getDrawable(it.resources,translateCategories(section.sectionType),null))
         }
         viewSection.itemSectionRecyclerview.let {
             it.setHasFixedSize(true)

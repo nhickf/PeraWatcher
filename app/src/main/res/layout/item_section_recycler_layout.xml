@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -9,9 +10,9 @@
         android:id="@+id/item_section_chip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Computer and IT Accessories"
-        app:chipIcon="@drawable/outline_computer_24"
-        style="@style/Custom.Chip" />
+        tools:text="Computer and IT Accessories"
+        tools:chipIcon="@drawable/outline_computer_24"
+        style="@style/Custom.Chip.Assist" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/item_section_recyclerview"
