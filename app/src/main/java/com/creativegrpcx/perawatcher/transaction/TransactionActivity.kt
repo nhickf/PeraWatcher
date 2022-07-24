@@ -20,6 +20,7 @@ import com.creativegrpcx.perawatcher.databinding.ActivityAddWalletBinding.inflat
 import com.creativegrpcx.perawatcher.databinding.ActivityTransactionBinding
 import com.creativegrpcx.perawatcher.databinding.TransactionInputLayoutBinding
 import com.creativegrpcx.perawatcher.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.types.CategoryType
 import com.creativegrpcx.perawatcher.types.WalletType
 import com.creativegrpcx.perawatcher.viewmodel.GlobalViewModel
@@ -34,6 +35,14 @@ private lateinit var includeBinding : TransactionInputLayoutBinding
 
 
 class TransactionActivity : BaseActivity() , DateTimeInterface{
+
+    private data class WalletChip(
+        val wallet: Wallet,
+        val chip: Chip
+    )
+
+    private lateinit var wallet : Wallet
+    private val chipsList : ArrayList<WalletChip> = ArrayList()
 
     private val globalViewModel: GlobalViewModel by viewModels {
          globalViewModelFactory
@@ -55,7 +64,8 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
                     translateCategories(),
                     includeBinding.transactionAmount.editText?.text.toString().toFloat(),
                     includeBinding.transactionDate.editText?.text.toString(),
-                    includeBinding.transactionTime.editText?.text.toString()
+                    includeBinding.transactionTime.editText?.text.toString(),
+                    wallet.walletId
                 )
             )
             closeActivity()
@@ -73,14 +83,22 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
 
         binding.transactionLayout.transactionExpensesChipGroup.let {
             globalViewModel.uiStateWallet.asLiveData().observe(this){ wallets ->
-                wallets?.forEach{ wallet->
+                wallets?.forEachIndexed { index, wallet ->
                     val chip = layoutInflater.inflate(R.layout.layout_chip_transaction, it, false) as Chip
                     it.addView(
                         chip.apply {
+                            this.id = wallet.walletType.ordinal + index
                             this.text = wallet.walletName
                             this.chipIcon = ResourcesCompat.getDrawable(resources, generateWalletIcon(wallet.walletType),application.theme)
                         }
                     )
+                    chipsList.add(WalletChip(wallet, chip))
+                }
+            }
+
+            it.setOnCheckedStateChangeListener { group, _ ->
+                chipsList.find { walletChip -> walletChip.chip.id == group.checkedChipId }?.let { wc ->
+                    wallet = wc.wallet
                 }
             }
         }
@@ -126,6 +144,5 @@ class TransactionActivity : BaseActivity() , DateTimeInterface{
     private fun closeActivity(){
         finish()
     }
-
 
 }
