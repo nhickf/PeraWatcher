@@ -46,11 +46,13 @@
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
+        <item name="chipIconTint">?attr/colorControlNormal</item>
     </style>
     <style name="Custom.Chip.Assist" parent="Widget.Material3.Chip.Assist">
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
+        <item name="chipIconTint">?attr/colorControlNormal</item>
     </style>
 
     <style name="Custom.Chip.Text.Appearance" parent="TextAppearance.Material3.BodySmall">

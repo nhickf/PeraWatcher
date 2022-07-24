@@ -12,6 +12,7 @@ data class Wallet(
     val walletType : WalletType,
     val isEnabled : Boolean,
     val isPrimary : Boolean
+
 ){
     @PrimaryKey(autoGenerate = false) var walletId : String = UUID.randomUUID().toString()
 }

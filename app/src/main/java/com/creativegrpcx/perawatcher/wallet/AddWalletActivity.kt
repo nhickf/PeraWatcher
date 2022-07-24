@@ -43,7 +43,7 @@ class AddWalletActivity : BaseActivity() {
     }
 
     private fun translateWallet () : WalletType {
-        return when(binding.transactionCategory.id){
+        return when(binding.transactionCategory.checkedChipId){
             binding.categoryCash.id -> WalletType.CASH
             binding.categoryCreditCard.id -> WalletType.CREDIT_CARD
             binding.categorySavings.id -> WalletType.SAVINGS
