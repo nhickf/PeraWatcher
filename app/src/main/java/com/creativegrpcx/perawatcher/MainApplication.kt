@@ -2,6 +2,7 @@ package com.creativegrpcx.perawatcher
 
 import android.app.Application
 import com.creativegrpcx.perawatcher.dependencyInjector.*
+import com.creativegrpcx.perawatcher.ui.fragment.BottomSheetAddMoney
 
 class MainApplication : Application() {
 

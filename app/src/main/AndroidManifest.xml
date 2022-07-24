@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PeraWatcher">
         <activity
-            android:name=".transaction.TransactionActivity"
+            android:name="com.creativegrpcx.perawatcher.ui.activity.transaction.TransactionActivity"
             android:exported="false" />
         <activity
-            android:name=".wallet.AddWalletActivity"
+            android:name="com.creativegrpcx.perawatcher.ui.activity.wallet.AddWalletActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
