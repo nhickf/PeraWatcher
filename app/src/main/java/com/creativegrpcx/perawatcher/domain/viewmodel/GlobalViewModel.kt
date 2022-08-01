@@ -1,6 +1,7 @@
 package com.creativegrpcx.perawatcher.domain.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.data.DataRepository
@@ -27,9 +28,15 @@ class GlobalViewModel @Inject constructor(
     val uiStateSectionedTransaction = _uiStateSectionTransaction.asStateFlow()
     val uiStateWallet = _uiStateWallet.asStateFlow()
 
+    init {
+        loadTransactions()
+        loadWallet()
+    }
+
     fun loadTransactions(vararg categories: CategoryType) {
         viewModelScope.launch {
             repository.getTransactions(*categories).collect {
+                Log.e("Items","$it")
                 _uiStateTransaction.value = it
             }
         }
@@ -62,17 +69,19 @@ class GlobalViewModel @Inject constructor(
                 repository.insertTransaction(
                     transaction =  transaction
                 ){
-                    //TODO : Add view display in insert onComplete
+                    Log.e("insertData","success")
                 }
             }catch (e : Exception){
-                //TODO : Add view display in insert errors
+                Log.e("insertData","$e")
             }
         }
     }
 
     fun insertWallet(wallet: Wallet) {
         viewModelScope.launch {
-            repository.insertWallet(wallet)
+            repository.insertWallet(wallet){
+
+            }
         }
     }
 }

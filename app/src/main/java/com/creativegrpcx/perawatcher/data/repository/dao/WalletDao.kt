@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 interface WalletDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWallet(vararg transaction: Wallet)
+    suspend fun insertWallet(vararg transaction: Wallet) : List<Long>
 
     @Delete
-    suspend fun deleteWallet(vararg transaction: Wallet)
+    suspend fun deleteWallet(vararg transaction: Wallet) : Int
 
     @Update
-    suspend fun updateWallet(vararg transaction: Wallet)
+    suspend fun updateWallet(vararg transaction: Wallet) : Int
 
     @Query("SELECT * FROM wallet ORDER BY walletId DESC")
     fun getAllWallet() : Flow<List<Wallet>>

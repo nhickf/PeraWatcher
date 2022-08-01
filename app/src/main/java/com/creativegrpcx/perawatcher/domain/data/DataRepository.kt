@@ -2,7 +2,9 @@ package com.creativegrpcx.perawatcher.domain.data
 
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
+import com.creativegrpcx.perawatcher.domain.controller.GetTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertTransaction
+import com.creativegrpcx.perawatcher.domain.controller.InsertWallet
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -22,26 +24,15 @@ class DataRepository @Inject constructor(private val localDataSource: IDataRepos
     }
 
      suspend fun getTransactions(vararg categories: CategoryType): Flow<List<Transaction>>{
-        //vararg categories: CategoryType
-//        val allTransaction : Flow<List<Transaction>> = transactionDao.getAllTransactions()
-//        if (categories.isEmpty()){
-//            return allTransaction
-//            return allTransaction.map { transactions ->
-//                if (categories.isNotEmpty()){
-//                    return@map transactions.filter { transaction -> categories.contains(transaction.category) }
-//                }
-//                transactions
-//            }
-//            return allTransaction.map { list: List<Transaction> -> list.filter { transaction -> categories.contains(transaction.category) } }
-       return localDataSource.getTransactions()
+         return GetTransaction(localDataSource)(categories = categories)
     }
 
      suspend fun getTransaction(transactionId: Int) : Flow<Transaction> {
        return localDataSource.getTransaction(transactionId)
     }
 
-     suspend fun insertWallet(vararg wallet: Wallet) {
-        localDataSource.insertWallet(*wallet)
+     suspend fun insertWallet(vararg wallet: Wallet, onComplete : () -> Unit) {
+        InsertWallet(repository = localDataSource)(wallets =  wallet, onComplete =  onComplete)
     }
 
      suspend fun deleteWallet(vararg wallet: Wallet){

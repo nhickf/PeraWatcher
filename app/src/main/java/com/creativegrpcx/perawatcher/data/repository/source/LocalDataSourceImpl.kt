@@ -32,16 +32,16 @@ class LocalDataSourceImpl @Inject constructor(
         return transactionDao.getTransaction(transactionId)
     }
 
-    override suspend fun insertWallet(vararg wallet: Wallet) {
-        walletDao.insertWallet(*wallet)
+    override suspend fun insertWallet(vararg wallet: Wallet) : List<Long> {
+       return walletDao.insertWallet(*wallet)
     }
 
-    override suspend fun deleteWallet(vararg wallet: Wallet) {
-        walletDao.deleteWallet(*wallet)
+    override suspend fun deleteWallet(vararg wallet: Wallet) : Int {
+      return  walletDao.deleteWallet(*wallet)
     }
 
-    override suspend fun updateWallet(vararg wallet: Wallet) {
-        walletDao.updateWallet(*wallet)
+    override suspend fun updateWallet(vararg wallet: Wallet) : Int {
+      return  walletDao.updateWallet(*wallet)
     }
 
     override suspend fun getAllWallet(): Flow<List<Wallet>> {

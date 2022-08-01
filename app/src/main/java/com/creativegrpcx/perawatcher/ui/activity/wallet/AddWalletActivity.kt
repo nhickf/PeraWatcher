@@ -31,7 +31,7 @@ class AddWalletActivity : BaseActivity() {
             globalViewModel.insertWallet(
                 Wallet(
                     binding.transactionTitle.editText?.text.toString(),
-                    binding.transactionAmount.editText?.text.toString().toFloat(),
+                    binding.transactionAmount.editText?.text.let { amount -> amount.toString().ifBlank { "0.0" } }.toFloat(),
                     translateWallet(),
                     isEnabled = false, isPrimary = false
                 )

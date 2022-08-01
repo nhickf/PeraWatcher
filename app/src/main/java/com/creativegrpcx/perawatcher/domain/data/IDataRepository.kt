@@ -14,9 +14,9 @@ interface IDataRepository {
         suspend fun getTransactions() : Flow<List<Transaction>>
         suspend fun getTransaction(transactionId: Int) : Flow<Transaction>
 
-        suspend fun insertWallet(vararg wallet: Wallet)
-        suspend fun deleteWallet(vararg wallet: Wallet)
-        suspend fun updateWallet(vararg wallet: Wallet)
+        suspend fun insertWallet(vararg wallet: Wallet) : List<Long>
+        suspend fun deleteWallet(vararg wallet: Wallet) : Int
+        suspend fun updateWallet(vararg wallet: Wallet) : Int
         suspend fun getAllWallet() : Flow<List<Wallet>>
         suspend fun getWallet(walletId: Int) :  Flow<Wallet>
     }
