@@ -1,7 +1,7 @@
 package com.creativegrpcx.perawatcher.dependencyInjector
 
-import com.creativegrpcx.perawatcher.BaseActivity
-import com.creativegrpcx.perawatcher.BaseFragment
+import com.creativegrpcx.perawatcher.ui.activity.main.BaseActivity
+import com.creativegrpcx.perawatcher.ui.fragment.main.BaseFragment
 import dagger.Component
 import javax.inject.Singleton
 

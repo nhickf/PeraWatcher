@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.creativegrpcx.perawatcher.dashboard.DashboardFragment"
+        android:name="com.creativegrpcx.perawatcher.ui.fragment.dashboard.DashboardFragment"
         android:label="fragment_dashboard2"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <activity
         android:id="@+id/transactionActivity"
-        android:name="com.creativegrpcx.perawatcher.transaction.TransactionActivity"
+        android:name="com.creativegrpcx.perawatcher.ui.activity.transaction.TransactionActivity"
         android:label="activity_transaction"
         tools:layout="@layout/activity_transaction" />
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.creativegrpcx.perawatcher.wallet.WalletFragment"
+        android:name="com.creativegrpcx.perawatcher.ui.activity.wallet.WalletFragment"
         android:label="fragment_wallet"
         tools:layout="@layout/fragment_wallet" >
         <action
@@ -33,17 +33,17 @@
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
-        android:name="com.creativegrpcx.perawatcher.history.HistoryFragment"
+        android:name="com.creativegrpcx.perawatcher.ui.fragment.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="com.creativegrpcx.perawatcher.statistics.StatisticsFragment"
+        android:name="com.creativegrpcx.perawatcher.ui.fragment.statistics.StatisticsFragment"
         android:label="fragment_statistics"
         tools:layout="@layout/fragment_statistics" />
     <activity
         android:id="@+id/addWalletActivity"
-        android:name="com.creativegrpcx.perawatcher.wallet.AddWalletActivity"
+        android:name="com.creativegrpcx.perawatcher.ui.activity.wallet.AddWalletActivity"
         android:label="AddWalletActivity"
         tools:layout="@layout/activity_add_wallet"/>
 

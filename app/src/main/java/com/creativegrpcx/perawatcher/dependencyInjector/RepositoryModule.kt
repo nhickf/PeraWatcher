@@ -1,11 +1,11 @@
 package com.creativegrpcx.perawatcher.dependencyInjector
 
 import android.app.Application
-import com.creativegrpcx.perawatcher.repository.AppDatabase
-import com.creativegrpcx.perawatcher.repository.LocalDataSource
-import com.creativegrpcx.perawatcher.repository.UserRepository
-import com.creativegrpcx.perawatcher.repository.dao.TransactionDao
-import com.creativegrpcx.perawatcher.repository.dao.WalletDao
+import com.creativegrpcx.perawatcher.data.repository.source.AppDatabase
+import com.creativegrpcx.perawatcher.data.repository.source.LocalDataSourceImpl
+import com.creativegrpcx.perawatcher.domain.data.DataRepository
+import com.creativegrpcx.perawatcher.data.repository.dao.TransactionDao
+import com.creativegrpcx.perawatcher.data.repository.dao.WalletDao
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,19 +19,18 @@ import javax.inject.Singleton
 class RepositoryModule(private val application: Application) {
 
     private val applicationScope = CoroutineScope(SupervisorJob())
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 
     @Provides
     @Singleton
     fun providesLocalDataSource(
         transactionDao: TransactionDao , walletDao: WalletDao
-    ) = LocalDataSource(defaultDispatcher,transactionDao, walletDao)
+    ) = LocalDataSourceImpl(transactionDao, walletDao)
 
     @Provides
     @Singleton
     fun providesUserRepository(
-        localDataSource: LocalDataSource
-    ) = UserRepository(localDataSource)
+        localDataSource: LocalDataSourceImpl
+    ) = DataRepository(localDataSource)
 
 
     @Provides
