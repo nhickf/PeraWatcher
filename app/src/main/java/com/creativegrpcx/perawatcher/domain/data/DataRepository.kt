@@ -5,11 +5,18 @@ import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.domain.controller.GetTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertWallet
+import com.creativegrpcx.perawatcher.domain.controller.UpdateRoute
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(private val localDataSource: IDataRepository.ILocalDataSource) {
+
+    fun updateRoute(routes : StateFlow<List<ScreenRoute>>, newRoute : ScreenRoute) : Flow<List<ScreenRoute>> {
+        return UpdateRoute()(routes, newRoute)
+    }
 
      suspend fun insertTransaction(vararg transaction: Transaction , onComplete : () -> Unit) {
         InsertTransaction(localDataSource)(transactions = transaction, onComplete =  onComplete)
