@@ -3,7 +3,7 @@ package com.creativegrpcx.perawatcher.ui.nav
 sealed class NavigationRoute(
     private val route: ScreenRoute
 ) {
-    object Dashboard : NavigationRoute(ScreenRoute( route = "dashboard", name = "dashboard"))
+    object Dashboard : NavigationRoute(ScreenRoute( route = "dashboard", name = "dashboard", isSelected = true))
     object Statistics : NavigationRoute(ScreenRoute( route = "statistics", name = "statistics"))
     object History : NavigationRoute(ScreenRoute( route = "history", name = "history"))
     object Wallet : NavigationRoute(ScreenRoute( route = "wallet", name = "wallet"))
@@ -23,7 +23,5 @@ data class ScreenRoute(
     val route : String,
     val name : String,
     val args : List<Any>? = null,
-
-){
-    var isSelected : Boolean = false
-}
+    val isSelected : Boolean = false
+)

@@ -59,8 +59,7 @@ fun TextIcon(
         Text(
             text = text,
             modifier
-                .weight(1f)
-            ,
+                .weight(1f),
             color,
             fontSize,
             fontStyle,
@@ -76,7 +75,6 @@ fun TextIcon(
             onTextLayout,
             style
         )
-
 
             Icon(
                 imageVector = icon,

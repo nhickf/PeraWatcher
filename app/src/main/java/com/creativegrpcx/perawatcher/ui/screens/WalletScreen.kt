@@ -10,17 +10,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.ui.components.WalletItem
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
 
 @Composable
-fun WalletScreen() {
+fun WalletScreen(
+    viewModel: GlobalViewModel?
+) {
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = "Net Worth",
@@ -53,7 +55,7 @@ fun WalletScreen() {
 @Preview(showBackground = true)
 fun DefaultWalletScreen(){
     AppTheme() {
-        WalletScreen()
+        WalletScreen(null)
     }
 
 }

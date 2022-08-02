@@ -1,14 +1,9 @@
 package com.creativegrpcx.perawatcher.ui.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,7 +17,8 @@ import com.creativegrpcx.perawatcher.ui.utils.Constants
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationChipItem(
-    route : ScreenRoute = Constants.ScreenRoutes[0],
+    routeContent : ScreenRoute = Constants.ScreenRoutes[0],
+    currentRoute : ScreenRoute = Constants.ScreenRoutes[0],
     onClick : (route : ScreenRoute) -> Unit = {}
 ) {
 
@@ -32,11 +28,11 @@ fun NavigationChipItem(
             borderColor = Color.Transparent,
         ),
         onClick = {
-            onClick(route)
+            onClick(routeContent)
         },
         label = {
             Text(
-                text = route.name.capitalize(),
+                text = routeContent.name.capitalize(),
                 maxLines = 1,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,
@@ -44,7 +40,7 @@ fun NavigationChipItem(
                 textAlign = TextAlign.Center
             )
         },
-        selected = route.isSelected
+        selected = currentRoute == routeContent
     )
 
 

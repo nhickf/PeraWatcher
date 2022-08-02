@@ -10,23 +10,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
+import com.creativegrpcx.perawatcher.ui.components.TransactionItem
 import com.creativegrpcx.perawatcher.ui.components.WalletItem
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
 
 
 @Composable
-fun DashboardScreen(){
+fun DashboardScreen(
+    viewModel: GlobalViewModel?
+){
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Transactions",
+            text = "Today Expenses",
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium
+        )
+        Text(
+            text = "$20,000",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
@@ -36,7 +44,7 @@ fun DashboardScreen(){
         {
 
             items(5){
-                WalletItem()
+                TransactionItem()
             }
 
         }
@@ -47,7 +55,7 @@ fun DashboardScreen(){
 @Preview(showBackground = true)
 fun DefaultDashboardScreen(){
     AppTheme() {
-        DashboardScreen()
+        DashboardScreen(null)
     }
 
 }

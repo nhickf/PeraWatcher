@@ -3,6 +3,7 @@ package com.creativegrpcx.perawatcher.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -21,7 +22,9 @@ import com.creativegrpcx.perawatcher.ui.shared.TextIcon
 @Composable
 fun WalletItem() {
 
-    Card{
+    Card(
+        Modifier.wrapContentHeight()
+    ){
         Column(
             Modifier.padding(16.dp),
         ) {
@@ -29,6 +32,7 @@ fun WalletItem() {
             TextIcon(
                 text = "Savings",
                 fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
                 icon = ImageVector.vectorResource(id = R.drawable.ic_baseline_chevron_right_24))
 
             Text(

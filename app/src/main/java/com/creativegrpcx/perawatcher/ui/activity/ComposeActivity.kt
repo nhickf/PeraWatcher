@@ -8,8 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.creativegrpcx.perawatcher.MainApplication
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModelFactory
@@ -23,8 +25,6 @@ class ComposeActivity : ComponentActivity() {
     @Inject
     lateinit var globalViewModelFactory: GlobalViewModelFactory
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).component.inject(this)
         super.onCreate(savedInstanceState)
@@ -34,22 +34,40 @@ class ComposeActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                // A surface container using the 'background' color from the theme
-                Log.e("ComposeActivity","${viewModel.uiStateRoute.collectAsState().value}")
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    containerColor = MaterialTheme.colorScheme.background,
-                    topBar = {
-                        ApplicationHeader(
-                            routes = viewModel.uiStateRoute.collectAsState().value
-                        ){
-                            viewModel.updateCurrentRoute(it)
-                        }
-                    }
-                ) {
-                    ApplicationRoute(it)
-                }
+                MainScreen(
+                    viewModel
+                )
             }
         }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(
+    viewModel: GlobalViewModel
+){
+    val navigationController = rememberNavController()
+    val currentRoute = viewModel.uiStateRoute.collectAsState().value.newRoute
+
+    // A surface container using the 'background' color from the theme
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            ApplicationHeader(
+                newRoute = currentRoute,
+            ){
+                viewModel.updateCurrentRoute(it)
+                navigationController.navigate(it.route)
+            }
+        }
+    ) {
+        ApplicationRoute(
+            viewModel = viewModel,
+            padding =  it,
+            navHostController = navigationController
+        )
     }
 }

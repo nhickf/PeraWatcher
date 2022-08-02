@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 import com.creativegrpcx.perawatcher.ui.utils.Constants
 
 @Composable
 fun ApplicationHeader(
-    routes: List<ScreenRoute>,
+    newRoute: ScreenRoute,
     onRouteChange: (route: ScreenRoute) -> Unit
 ) {
     Column(
@@ -44,8 +46,11 @@ fun ApplicationHeader(
             contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
         )
         {
-            items(routes) { route ->
-                NavigationChipItem(route) {
+            items(Constants.ScreenRoutes) { route ->
+                NavigationChipItem(
+                    routeContent = route,
+                    currentRoute = newRoute,
+                ) {
                     onRouteChange(it)
                 }
             }
