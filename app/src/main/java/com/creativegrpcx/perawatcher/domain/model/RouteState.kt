@@ -5,5 +5,8 @@ import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 
 data class RouteState(
-    val newRoute : ScreenRoute = NavigationRoute.Dashboard.withoutArgs,
-)
+    val currentRoute: ScreenRoute = NavigationRoute.Dashboard.withoutArgs,
+    val oldRoute: ScreenRoute? = null,
+    val isRouteChange: Boolean = false,
+    override val isNavigateUp: Boolean = false,
+) : MainState()

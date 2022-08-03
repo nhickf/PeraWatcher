@@ -6,6 +6,7 @@ import com.creativegrpcx.perawatcher.domain.controller.GetTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertWallet
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.domain.utils.Response
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ class DataRepository @Inject constructor(private val localDataSource: IDataRepos
         localDataSource.updateTransaction(*transaction)
     }
 
-     suspend fun getTransactions(vararg categories: CategoryType): Flow<List<Transaction>>{
+     suspend fun getTransactions(vararg categories: CategoryType): Flow<Response<List<Transaction>>>{
          return GetTransaction(localDataSource)(categories = categories)
     }
 

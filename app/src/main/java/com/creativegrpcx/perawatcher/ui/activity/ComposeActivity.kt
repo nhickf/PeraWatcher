@@ -2,7 +2,6 @@ package com.creativegrpcx.perawatcher.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -28,7 +27,7 @@ class ComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).component.inject(this)
         super.onCreate(savedInstanceState)
-        val viewModel : GlobalViewModel by viewModels {
+        val viewModel: GlobalViewModel by viewModels {
             globalViewModelFactory
         }
 
@@ -47,26 +46,30 @@ class ComposeActivity : ComponentActivity() {
 @Composable
 fun MainScreen(
     viewModel: GlobalViewModel
-){
+) {
     val navigationController = rememberNavController()
-    val currentRoute = viewModel.uiStateRoute.collectAsState().value.newRoute
+    val state = viewModel.routeState.collectAsState().value
 
     // A surface container using the 'background' color from the theme
+
+    if (state.isRouteChange) navigationController.navigate(state.currentRoute.route)
+    if (state.isNavigateUp) navigationController.navigateUp()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             ApplicationHeader(
-                newRoute = currentRoute,
-            ){
+                newRoute = state.currentRoute,
+            ) {
                 viewModel.updateCurrentRoute(it)
-                navigationController.navigate(it.route)
             }
+
         }
     ) {
         ApplicationRoute(
             viewModel = viewModel,
-            padding =  it,
+            padding = it,
             navHostController = navigationController
         )
     }

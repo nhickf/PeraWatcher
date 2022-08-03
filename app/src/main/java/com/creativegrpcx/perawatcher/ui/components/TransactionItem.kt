@@ -16,12 +16,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.R
-import com.creativegrpcx.perawatcher.ui.shared.TextIcon
+import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.ui.utils.Constants
 
 
 @Composable
 @Preview
-fun TransactionItem() {
+fun PreviewTransactionItem(){
+    TransactionItem(transaction =
+    Transaction(
+        title = "Compose test",
+        category = CategoryType.Bills,
+        amount = 122.00f,
+        date = "2022-08-03",
+        time = "14:56:00",
+        walletId = "1234"
+    )
+    )
+}
+
+@Composable
+fun TransactionItem(
+    transaction : Transaction
+) {
 
     Card(
         modifier = Modifier.wrapContentHeight()
@@ -34,11 +52,9 @@ fun TransactionItem() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 
-            //ImageVector.vectorResource(id = R.drawable.ic_baseline_chevron_right_24)
-
             Icon(
                 imageVector = ImageVector
-                    .vectorResource(id = R.drawable.baseline_health_and_safety_24),
+                    .vectorResource(id = Constants.CategoryIcon(transaction.category)),
                 contentDescription = ""
             )
 
@@ -55,7 +71,7 @@ fun TransactionItem() {
                     maxLines = 2,
                     fontWeight = FontWeight.Medium,
                     overflow = TextOverflow.Ellipsis,
-                    text = "Available Balaaaance"
+                    text = transaction.title
                 )
 
                 Text(
@@ -64,20 +80,23 @@ fun TransactionItem() {
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Normal,
                     maxLines = 1,
-                    text = "Jan 10 2022 11:20 AM"
+                    text = transaction.currentDateTime
                 )
             }
 
             Text(
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 textAlign = TextAlign.End,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                text = "$112.60"
+                text = transaction.formatAmount
             )
         }
     }
 }
+
 

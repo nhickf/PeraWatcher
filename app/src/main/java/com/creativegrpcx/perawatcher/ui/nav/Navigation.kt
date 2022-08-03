@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
+import com.creativegrpcx.perawatcher.ui.screens.AddTransaction
 import com.creativegrpcx.perawatcher.ui.screens.DashboardScreen
 import com.creativegrpcx.perawatcher.ui.screens.HistoryScreen
 import com.creativegrpcx.perawatcher.ui.screens.WalletScreen
@@ -25,7 +26,7 @@ fun ApplicationRoute(
 
     NavHost(
         modifier = Modifier
-            .padding(PaddingValues(start = 16.dp , top = padding.calculateTopPadding(), end = 16.dp))
+            .padding(PaddingValues(start = 16.dp, top = padding.calculateTopPadding(), end = 16.dp))
             .fillMaxSize(),
         navController = navHostController,
         startDestination = NavigationRoute.Dashboard.withoutArgs.route){
@@ -51,6 +52,12 @@ fun ApplicationRoute(
             route = NavigationRoute.Wallet.withoutArgs.route,
             content = {
                 WalletScreen(viewModel)
+            }
+        )
+        composable(
+            route = NavigationRoute.AddTransaction.withoutArgs.route,
+            content = {
+                AddTransaction()
             }
         )
     }
