@@ -5,18 +5,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import com.creativegrpcx.perawatcher.MainApplication
+import com.creativegrpcx.perawatcher.domain.viewmodel.AddTransactionViewModel
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModelFactory
 import com.creativegrpcx.perawatcher.ui.components.ApplicationHeader
 import com.creativegrpcx.perawatcher.ui.nav.ApplicationRoute
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import javax.inject.Inject
 
 class ComposeActivity : ComponentActivity() {
@@ -27,14 +29,14 @@ class ComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as MainApplication).component.inject(this)
         super.onCreate(savedInstanceState)
-        val viewModel: GlobalViewModel by viewModels {
+        val globalViewModel: GlobalViewModel by viewModels {
             globalViewModelFactory
         }
 
         setContent {
             AppTheme {
                 MainScreen(
-                    viewModel
+                    globalViewModel
                 )
             }
         }
@@ -42,13 +44,13 @@ class ComposeActivity : ComponentActivity() {
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen(
-    viewModel: GlobalViewModel
+    globalViewModel: GlobalViewModel,
 ) {
-    val navigationController = rememberNavController()
-    val state = viewModel.routeState.collectAsState().value
+    val navigationController = rememberAnimatedNavController()
+    val state = globalViewModel.routeState.collectAsState().value
 
     // A surface container using the 'background' color from the theme
 
@@ -62,13 +64,13 @@ fun MainScreen(
             ApplicationHeader(
                 newRoute = state.currentRoute,
             ) {
-                viewModel.updateCurrentRoute(it)
+                globalViewModel.updateCurrentRoute(it)
             }
 
         }
     ) {
         ApplicationRoute(
-            viewModel = viewModel,
+            viewModel = globalViewModel,
             padding = it,
             navHostController = navigationController
         )

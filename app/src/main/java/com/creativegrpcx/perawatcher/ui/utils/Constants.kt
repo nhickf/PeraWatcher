@@ -1,20 +1,33 @@
 package com.creativegrpcx.perawatcher.ui.utils
 
+import android.icu.util.Calendar
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.R
+import com.creativegrpcx.perawatcher.domain.model.Date
+import com.creativegrpcx.perawatcher.domain.model.Time
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 
 object Constants {
 
     val ScreenRoutes = listOf(
-        ScreenRoute( route = "dashboard", name = "dashboard", isSelected = true),
-        ScreenRoute( route = "statistics", name = "statistics"),
-        ScreenRoute( route = "history", name = "history"),
-        ScreenRoute( route = "wallet", name = "wallet"),
+        ScreenRoute(route = "dashboard", name = "dashboard", isSelected = true),
+        ScreenRoute(route = "statistics", name = "statistics"),
+        ScreenRoute(route = "history", name = "history"),
+        ScreenRoute(route = "wallet", name = "wallet"),
     )
 
-    fun CategoryIcon(categoryType: CategoryType) : Int{
-        return when(categoryType){
+    fun categoryIcon(categoryType: CategoryType): Int {
+        return when (categoryType) {
             CategoryType.Appliance -> R.drawable.baseline_coffee_maker_24
             CategoryType.BeautyAndPersonalCare -> R.drawable.baseline_face_24
             CategoryType.Bills -> R.drawable.baseline_receipt_24
@@ -31,5 +44,17 @@ object Constants {
         }
     }
 
+    // Initializing a Calendar
+    private val mCalendar = Calendar.getInstance()
 
+    val currentDate = Date(
+        year = mCalendar.get(Calendar.YEAR),
+        month = mCalendar.get(Calendar.MONTH),
+        dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    val currentTime = Time(
+        hourOfDay = mCalendar.get(Calendar.HOUR_OF_DAY),
+        minute = mCalendar.get(Calendar.MINUTE)
+    )
 }

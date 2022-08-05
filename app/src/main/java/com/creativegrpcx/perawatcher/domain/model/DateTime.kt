@@ -1,4 +1,4 @@
-package com.creativegrpcx.perawatcher.data.repository.entities
+package com.creativegrpcx.perawatcher.domain.model
 
 import java.time.LocalDate
 import java.time.LocalTime

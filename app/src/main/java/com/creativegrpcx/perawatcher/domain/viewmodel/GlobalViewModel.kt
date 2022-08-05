@@ -7,10 +7,9 @@ import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.data.DataRepository
 import com.creativegrpcx.perawatcher.data.repository.entities.SectionedTransaction
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
-import com.creativegrpcx.perawatcher.domain.model.DashboardState
-import com.creativegrpcx.perawatcher.domain.model.HistoryState
-import com.creativegrpcx.perawatcher.domain.model.RouteState
-import com.creativegrpcx.perawatcher.domain.model.WalletState
+import com.creativegrpcx.perawatcher.domain.model.*
+import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
 import com.creativegrpcx.perawatcher.domain.utils.Response
 import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
@@ -23,16 +22,13 @@ class GlobalViewModel @Inject constructor(
     private val repository: DataRepository
 ) : AndroidViewModel(application) {
 
-    private val _uiStateTransaction = MutableStateFlow<List<Transaction>>(arrayListOf())
-    private val _uiStateSectionTransaction =
-        MutableStateFlow<List<SectionedTransaction>>(arrayListOf())
-    private val _uiStateWallet = MutableStateFlow<List<Wallet>>(arrayListOf())
-
     private val _routeState = MutableStateFlow(RouteState())
     private val _dashBoardState = MutableStateFlow(DashboardState())
     private val _walletState = MutableStateFlow(WalletState())
     private val _historyState = MutableStateFlow(HistoryState())
+    private val _addTransactionState = MutableStateFlow(AddTransactionState())
 
+    val addTransactionState = _addTransactionState.asStateFlow()
     val routeState = _routeState.asStateFlow()
     val dashBoardState = _dashBoardState.asStateFlow()
     val historyState = _historyState.asStateFlow()
@@ -53,43 +49,6 @@ class GlobalViewModel @Inject constructor(
             )
         }
     }
-
-    fun loadHistoryScreen(){
-        viewModelScope.launch {
-            repository.getTransactions()
-                .onEach { response ->
-                    val groupedTransaction = response.data?.groupBy { it.category.name } ?: emptyMap()
-                    when (response) {
-                        is Response.Loading -> {
-                            _historyState.update {
-                                it.copy(
-                                    isLoading = response.isLoading,
-                                    groupTransactions = groupedTransaction,
-                                    overAllExpenses = calculateExpenses(response.data)
-                                )
-                            }
-                        }
-                        is Response.Error -> {
-                            _historyState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    groupTransactions = groupedTransaction,
-                                    error = Error(response.exception),
-                                )
-                            }
-                        }
-                        else -> _historyState.update {
-                            it.copy(
-                                isLoading = false,
-                                groupTransactions = groupedTransaction,
-                                overAllExpenses = calculateExpenses(response.data)
-                            )
-                        }
-                    }
-                }.collect()
-        }
-    }
-
 
     private fun loadDashboardState() {
         viewModelScope.launch {
@@ -126,11 +85,96 @@ class GlobalViewModel @Inject constructor(
         }
     }
 
-    private fun calculateExpenses(transactions : List<Transaction>?) : String{
-       return String.format("%.2f",
-           transactions?.map { transaction ->
-               transaction.amount
-           }?.sum() )
+    private fun loadHistoryScreen() {
+        viewModelScope.launch {
+            repository.getTransactions()
+                .onEach { response ->
+                    val groupedTransaction =
+                        response.data?.groupBy { it.category.name } ?: emptyMap()
+                    when (response) {
+                        is Response.Loading -> {
+                            _historyState.update {
+                                it.copy(
+                                    isLoading = response.isLoading,
+                                    groupTransactions = groupedTransaction,
+                                    overAllExpenses = calculateExpenses(response.data)
+                                )
+                            }
+                        }
+                        is Response.Error -> {
+                            _historyState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    groupTransactions = groupedTransaction,
+                                    error = Error(response.exception),
+                                )
+                            }
+                        }
+                        else -> _historyState.update {
+                            it.copy(
+                                isLoading = false,
+                                groupTransactions = groupedTransaction,
+                                overAllExpenses = calculateExpenses(response.data)
+                            )
+                        }
+                    }
+                }.collect()
+        }
+    }
+
+
+    fun onAddTransactionEventHandler(currentEvent: AddTransactionEvent) {
+        if (currentEvent == AddTransactionEvent.SaveTransaction) {
+            viewModelScope.launch {
+                val state = _addTransactionState.value
+                repository.insertTransaction(
+                    Transaction(
+                        title = state.titleValue,
+                        category = state.selectedCategory ?: CategoryType.Others,
+                        amount = state.expensesAmount.toFloat(),
+                        date = state.date.formattedDate,
+                        time = state.time.formattedTime,
+                        walletId = "1234",
+                    )
+                ) {
+
+                }
+            }
+        }
+
+        _addTransactionState.update { state ->
+            when (currentEvent) {
+                is AddTransactionEvent.AmountChange -> state.copy(
+                    expensesAmount = currentEvent.amount
+                )
+                is AddTransactionEvent.CategoryChange -> state.copy(
+                    selectedCategory = currentEvent.categoryType
+                )
+                is AddTransactionEvent.DateChange -> state.copy(
+                    date = currentEvent.date
+                )
+                is AddTransactionEvent.NoteChange -> state.copy(
+                    extraNotes = currentEvent.note
+                )
+                is AddTransactionEvent.TimeChange -> state.copy(
+                    time = currentEvent.time
+                )
+                is AddTransactionEvent.TitleChange -> state.copy(
+                    titleValue = currentEvent.title
+                )
+                else -> {
+                    state
+                }
+            }
+        }
+    }
+
+    private fun calculateExpenses(transactions: List<Transaction>?): String {
+        return String.format("%.2f",
+            transactions?.map { transaction ->
+                transaction.amount
+            }?.sum()
+        )
     }
 
 //    fun loadSectionTransactions() {
@@ -147,11 +191,11 @@ class GlobalViewModel @Inject constructor(
 //    }
 
     fun loadWallet() {
-        viewModelScope.launch {
-            repository.getAllWallet().collect {
-                _uiStateWallet.value = it
-            }
-        }
+//        viewModelScope.launch {
+//            repository.getAllWallet().collect {
+//                _uiStateWallet.value = it
+//            }
+//        }
     }
 
     fun insertData(vararg transaction: Transaction) {

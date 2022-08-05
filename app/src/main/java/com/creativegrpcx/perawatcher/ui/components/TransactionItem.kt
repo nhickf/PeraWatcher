@@ -15,7 +15,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.creativegrpcx.perawatcher.R
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.ui.utils.Constants
@@ -54,7 +53,7 @@ fun TransactionItem(
 
             Icon(
                 imageVector = ImageVector
-                    .vectorResource(id = Constants.CategoryIcon(transaction.category)),
+                    .vectorResource(id = Constants.categoryIcon(transaction.category)),
                 contentDescription = ""
             )
 
