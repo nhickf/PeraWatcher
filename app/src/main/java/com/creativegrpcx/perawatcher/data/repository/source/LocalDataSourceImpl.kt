@@ -24,7 +24,7 @@ class LocalDataSourceImpl @Inject constructor(
        return transactionDao.updateTransaction(*transaction)
     }
 
-    override suspend fun getTransactions(): Flow<List<Transaction>> {
+    override  fun getTransactions(): Flow<List<Transaction>> {
         return transactionDao.getAllTransactions()
     }
 

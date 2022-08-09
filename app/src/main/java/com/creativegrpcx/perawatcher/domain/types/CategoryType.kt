@@ -13,7 +13,7 @@ enum class CategoryType(val id : Int) {
     HobbiesAndLeisure(10),
     PetSupplies(11),
     Subscription(13),
-    Others(0),
+    Others(0)
 }
 
 /**
@@ -22,3 +22,4 @@ enum class CategoryType(val id : Int) {
 inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
     return T::class.java.enumConstants?.any { it.name == name} ?: false
 }
+

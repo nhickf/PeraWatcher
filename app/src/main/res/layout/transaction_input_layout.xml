@@ -60,8 +60,6 @@
             app:singleSelection="true"
             app:singleLine="false">
 
-
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/category_appliances"
                 android:layout_width="wrap_content"

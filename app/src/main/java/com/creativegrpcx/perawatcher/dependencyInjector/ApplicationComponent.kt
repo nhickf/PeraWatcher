@@ -1,7 +1,7 @@
 package com.creativegrpcx.perawatcher.dependencyInjector
 
-import com.creativegrpcx.perawatcher.ui.activity.main.BaseActivity
-import com.creativegrpcx.perawatcher.ui.fragment.main.BaseFragment
+import com.creativegrpcx.perawatcher.ui.activity.ComposeActivity
+
 import dagger.Component
 import javax.inject.Singleton
 
@@ -10,7 +10,6 @@ import javax.inject.Singleton
     (RepositoryModule::class) , (ViewModelModule::class)])
 interface ApplicationComponent {
 
-    fun inject(baseActivity: BaseActivity)
-    fun inject(baseFragment: BaseFragment)
+    fun inject(composeActivity: ComposeActivity)
 
 }

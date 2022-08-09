@@ -1,7 +1,7 @@
 package com.creativegrpcx.perawatcher.domain.utils
 
-sealed class GeneralException(error : Error) : Exception(error) {
-    data class EmptyTransaction(private val error : Error) : GeneralException(error)
-    data class IncompleteTransaction(private val error : Error) : GeneralException(error)
-    data class FailedExecute(private val error : Error) : GeneralException(error)
+sealed class GeneralException(errorMessage : String) : Exception(errorMessage) {
+    data class EmptyTransaction(private val errorMessage : String) : GeneralException(errorMessage)
+    data class IncompleteTransaction(private val errorMessage : String) : GeneralException(errorMessage)
+    data class FailedExecute(private val errorMessage : String) : GeneralException(errorMessage)
 }

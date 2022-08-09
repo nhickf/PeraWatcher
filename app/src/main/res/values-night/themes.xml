@@ -1,36 +1,36 @@
 <resources>
 
     <style name="Theme.PeraWatcher" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="fontFamily">@font/poppins_family</item>
+        <item name="android:statusBarColor">@color/md_theme_dark_onPrimary</item>
 
-        <item name="colorPrimary">@color/md_theme_dark_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/md_theme_dark_secondary</item>
-        <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/md_theme_dark_tertiary</item>
-        <item name="colorOnTertiary">@color/md_theme_dark_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/md_theme_dark_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/md_theme_dark_onTertiaryContainer</item>
-        <item name="colorError">@color/md_theme_dark_error</item>
-        <item name="colorErrorContainer">@color/md_theme_dark_errorContainer</item>
-        <item name="colorOnError">@color/md_theme_dark_onError</item>
-        <item name="colorOnErrorContainer">@color/md_theme_dark_onErrorContainer</item>
-        <item name="android:colorBackground">@color/md_theme_dark_background</item>
-        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>
-        <item name="colorSurface">@color/md_theme_dark_surface</item>
-        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
-        <item name="colorSurfaceVariant">@color/md_theme_dark_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>
-        <item name="colorOutline">@color/md_theme_dark_outline</item>
-        <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
-        <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
-<!--        <item name="colorSurfaceTint">@color/md_theme_dark_surfaceTint</item>-->
-<!--        <item name="colorSurfaceTintColor">@color/md_theme_dark_surfaceTintColor</item>-->
-        <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>
+<!--        <item name="colorPrimary">@color/md_theme_dark_primary</item>-->
+<!--        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>-->
+<!--        <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>-->
+<!--        <item name="colorOnPrimaryContainer">@color/md_theme_dark_onPrimaryContainer</item>-->
+<!--        <item name="colorSecondary">@color/md_theme_dark_secondary</item>-->
+<!--        <item name="colorOnSecondary">@color/md_theme_dark_onSecondary</item>-->
+<!--        <item name="colorSecondaryContainer">@color/md_theme_dark_secondaryContainer</item>-->
+<!--        <item name="colorOnSecondaryContainer">@color/md_theme_dark_onSecondaryContainer</item>-->
+<!--        <item name="colorTertiary">@color/md_theme_dark_tertiary</item>-->
+<!--        <item name="colorOnTertiary">@color/md_theme_dark_onTertiary</item>-->
+<!--        <item name="colorTertiaryContainer">@color/md_theme_dark_tertiaryContainer</item>-->
+<!--        <item name="colorOnTertiaryContainer">@color/md_theme_dark_onTertiaryContainer</item>-->
+<!--        <item name="colorError">@color/md_theme_dark_error</item>-->
+<!--        <item name="colorErrorContainer">@color/md_theme_dark_errorContainer</item>-->
+<!--        <item name="colorOnError">@color/md_theme_dark_onError</item>-->
+<!--        <item name="colorOnErrorContainer">@color/md_theme_dark_onErrorContainer</item>-->
+<!--        <item name="android:colorBackground">@color/md_theme_dark_background</item>-->
+<!--        <item name="colorOnBackground">@color/md_theme_dark_onBackground</item>-->
+<!--        <item name="colorSurface">@color/md_theme_dark_surface</item>-->
+<!--        <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>-->
+<!--        <item name="colorSurfaceVariant">@color/md_theme_dark_surfaceVariant</item>-->
+<!--        <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>-->
+<!--        <item name="colorOutline">@color/md_theme_dark_outline</item>-->
+<!--        <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>-->
+<!--        <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>-->
+<!--&lt;!&ndash;        <item name="colorSurfaceTint">@color/md_theme_dark_surfaceTint</item>&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="colorSurfaceTintColor">@color/md_theme_dark_surfaceTintColor</item>&ndash;&gt;-->
+<!--        <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>-->
     </style>
 
     <style name="Custom.Chip" parent="Widget.Material3.Chip.Filter">
@@ -53,5 +53,12 @@
         <item name="fontFamily">@font/poppins_family</item>
         <item name="android:fontFamily">@font/poppins_family</item>
     </style>
+
+    <style name="CalenderViewCustom" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/md_theme_dark_tertiary</item>
+        <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
+        <item name="colorSurface">@color/md_theme_dark_surface</item>
+    </style>
+
 
 </resources>
