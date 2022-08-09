@@ -13,28 +13,29 @@ class InsertTransaction(private val repository: IDataRepository.ILocalDataSource
 
         if (transactions.isEmpty()) {
             throw GeneralException.EmptyTransaction(
-                Error(
-                   "Could not save empty transaction."
-                )
+                "Could not save empty transaction."
             )
         }
 
         transactions.let {
-            it.forEach {  transaction ->
+            it.forEach { transaction ->
                 when (false) {
                     (transaction.title.isNotEmpty() && transaction.title.isNotBlank()) -> throw GeneralException.IncompleteTransaction(
-                        Error("Please fill the title for this transaction.")
+                        "Please fill the title for this transaction."
                     )
                     (transaction.time.isNotEmpty() && transaction.time.isNotBlank()) -> throw GeneralException.IncompleteTransaction(
-                        Error( "Please select time for this transaction.")
+
+                        "Please select time for this transaction."
                     )
                     (transaction.date.isNotEmpty() && transaction.date.isNotBlank()) -> throw GeneralException.IncompleteTransaction(
-                        Error("Please select date for this transaction.")
+                        "Please select date for this transaction."
+                    )
+                    (transaction.walletId.isNotEmpty() && transaction.walletId.isNotBlank()) -> throw GeneralException.IncompleteTransaction(
+                        "Please select wallet for this transaction."
                     )
                     else -> {
-
                         if (repository.insertTransaction(transaction).isEmpty()) {
-                            throw GeneralException.FailedExecute(Error("Error occurred unable to save transaction!"))
+                            throw GeneralException.FailedExecute("Error occurred unable to save transaction!")
                         }
                         onComplete()
                     }

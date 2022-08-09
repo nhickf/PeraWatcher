@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.ui.utils.Constants
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
 
 
 @Composable
@@ -27,7 +28,7 @@ fun PreviewTransactionItem(){
     Transaction(
         title = "Compose test",
         category = CategoryType.Bills,
-        amount = 122.00f,
+        amount = "122.00",
         date = "2022-08-03",
         time = "14:56:00",
         walletId = "1234"

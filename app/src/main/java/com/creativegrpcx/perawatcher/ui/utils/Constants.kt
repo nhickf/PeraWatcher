@@ -15,6 +15,7 @@ import com.creativegrpcx.perawatcher.R
 import com.creativegrpcx.perawatcher.domain.model.Date
 import com.creativegrpcx.perawatcher.domain.model.Time
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.domain.types.WalletType
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 
 object Constants {
@@ -44,17 +45,27 @@ object Constants {
         }
     }
 
+    fun walletIcon(walletType: WalletType): Int {
+        return when (walletType) {
+            WalletType.CASH -> R.drawable.cash_100
+            WalletType.CREDIT_CARD -> R.drawable.credit_card
+            WalletType.SAVINGS -> R.drawable.bank
+            else -> R.drawable.baseline_question_mark_24
+        }
+    }
+
     // Initializing a Calendar
     private val mCalendar = Calendar.getInstance()
 
     val currentDate = Date(
-        year = mCalendar.get(Calendar.YEAR),
+        year = mCalendar.get(Calendar.YEAR) ,
         month = mCalendar.get(Calendar.MONTH),
         dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH)
     )
 
     val currentTime = Time(
-        hourOfDay = mCalendar.get(Calendar.HOUR_OF_DAY),
+        hourOfDay = mCalendar.get(Calendar.HOUR),
         minute = mCalendar.get(Calendar.MINUTE)
     )
+
 }

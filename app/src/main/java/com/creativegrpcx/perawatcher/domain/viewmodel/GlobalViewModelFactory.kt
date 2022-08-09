@@ -19,10 +19,6 @@ class GlobalViewModelFactory @Inject constructor(
         @Suppress("UNCHECKED_CAST")
         return when (modelClass) {
             GlobalViewModel::class.java -> GlobalViewModel(application, repository) as T
-            AddTransactionViewModel::class.java -> AddTransactionViewModel(
-                application,
-                repository
-            ) as T
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class")
             }

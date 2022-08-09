@@ -26,6 +26,7 @@ import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
 import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,7 +49,7 @@ fun HistoryScreen(
             fontWeight = FontWeight.Medium
         )
         Text(
-            text = "$${state?.value?.overAllExpenses}",
+            text = "$${state?.value?.overAllExpenses?.formatDecimalSeparator()}",
             fontSize = 32.sp,
             fontWeight = FontWeight.SemiBold
         )

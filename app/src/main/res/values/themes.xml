@@ -62,5 +62,11 @@
         <item name="android:fontFamily">@font/poppins_family</item>
     </style>
 
+    <style name="CalenderViewCustom" parent="ThemeOverlay.Material3.Dialog">
+        <item name="colorAccent">@color/md_theme_light_tertiary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+    </style>
+
 
 </resources>

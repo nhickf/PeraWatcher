@@ -17,10 +17,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.R
+import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
+import com.creativegrpcx.perawatcher.domain.types.WalletType
 import com.creativegrpcx.perawatcher.ui.shared.TextIcon
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
 
 @Composable
-fun WalletItem() {
+fun WalletItem(
+    wallet : Wallet = Wallet(
+        "Savings",
+        "21,300",
+        walletType = WalletType.CASH,
+        true,
+        isPrimary = false
+    )
+) {
 
     Card(
         Modifier.wrapContentHeight()
@@ -30,7 +41,7 @@ fun WalletItem() {
         ) {
 
             TextIcon(
-                text = "Savings",
+                text = wallet.walletName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 icon = ImageVector.vectorResource(id = R.drawable.ic_baseline_chevron_right_24))
@@ -46,7 +57,8 @@ fun WalletItem() {
                 textAlign = TextAlign.End,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Medium,
-                text = "$5453.45")
+                text = wallet.formatWalletAmount
+            )
         }
     }
 

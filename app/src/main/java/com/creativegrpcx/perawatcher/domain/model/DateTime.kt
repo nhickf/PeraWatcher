@@ -14,12 +14,12 @@ data class Date(
    val month: Int,
    val dayOfMonth: Int
 ) {
-    val formattedDate = LocalDate.of(year, month, dayOfMonth).format(DateTimeFormatter.ISO_LOCAL_DATE)
+    val formattedDate: String = LocalDate.of(year, month + 1, dayOfMonth).format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
 
 data class Time(
    val hourOfDay: Int,
    val minute: Int
 ){
-    val formattedTime = LocalTime.of(hourOfDay,minute).format(DateTimeFormatter.ISO_LOCAL_TIME)
+    val formattedTime: String = LocalTime.of(hourOfDay,minute).format(DateTimeFormatter.ISO_LOCAL_TIME)
 }

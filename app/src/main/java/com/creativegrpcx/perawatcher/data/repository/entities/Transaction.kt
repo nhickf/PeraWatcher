@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
+import com.creativegrpcx.perawatcher.ui.utils.removeComma
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -13,11 +15,11 @@ import java.util.*
 data class Transaction(
     val title: String,
     val category: CategoryType,
-    val amount: Float,
+    val amount: String,
     val date: String,
     val time: String,
     val walletId: String,
-
+    val notes : String = ""
     ) {
     @PrimaryKey(autoGenerate = false)
     var transactionId: String = UUID.randomUUID().toString()
@@ -34,5 +36,5 @@ data class Transaction(
     val currentDateTime = "$formatDate - $formatTime"
 
     @Ignore
-    val formatAmount = "$${String.format("%.2f",this.amount)}"
+    val formatAmount = "$${this.amount.removeComma().toString().formatDecimalSeparator()}"
 }

@@ -1,5 +1,6 @@
 package com.creativegrpcx.perawatcher.ui.nav
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
@@ -10,14 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.creativegrpcx.perawatcher.domain.viewmodel.AddTransactionViewModel
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
-import com.creativegrpcx.perawatcher.ui.screens.AddTransactionScreen
-import com.creativegrpcx.perawatcher.ui.screens.DashboardScreen
-import com.creativegrpcx.perawatcher.ui.screens.HistoryScreen
-import com.creativegrpcx.perawatcher.ui.screens.WalletScreen
+import com.creativegrpcx.perawatcher.ui.screens.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -26,7 +24,6 @@ fun ApplicationRoute(
     padding : PaddingValues,
     navHostController: NavHostController
 ){
-
 
     AnimatedNavHost(
         modifier = Modifier
@@ -45,7 +42,7 @@ fun ApplicationRoute(
             },
             content = {
                 DashboardScreen(viewModel)
-            }
+            },
         )
         composable(
             route = NavigationRoute.Statistics.withoutArgs.route,
@@ -88,6 +85,24 @@ fun ApplicationRoute(
                 )
             }
         )
+
+        composable(
+            route = NavigationRoute.AddWallet.withoutArgs.route,
+            enterTransition = {
+                slideInVertically (
+                    initialOffsetY = { 1000 }
+                )
+            },
+            content = {
+                AddWalletScreen(
+                    viewModel =  viewModel
+                )
+            }
+        )
+    }
+
+    BackHandler() {
+        viewModel.updateCurrentRoute(null)
     }
 
 }

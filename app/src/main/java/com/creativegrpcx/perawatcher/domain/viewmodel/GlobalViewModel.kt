@@ -5,14 +5,18 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.data.DataRepository
-import com.creativegrpcx.perawatcher.data.repository.entities.SectionedTransaction
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.domain.model.*
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
+import com.creativegrpcx.perawatcher.domain.utils.AddWalletEvent
 import com.creativegrpcx.perawatcher.domain.utils.Response
 import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
+import com.creativegrpcx.perawatcher.ui.utils.Constants
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
+import com.creativegrpcx.perawatcher.ui.utils.removeComma
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,11 +31,16 @@ class GlobalViewModel @Inject constructor(
     private val _walletState = MutableStateFlow(WalletState())
     private val _historyState = MutableStateFlow(HistoryState())
     private val _addTransactionState = MutableStateFlow(AddTransactionState())
+    private val _addWalletState = MutableStateFlow(AddWalletState())
+    private val _errorState = MutableSharedFlow<ErrorState>()
 
     val addTransactionState = _addTransactionState.asStateFlow()
     val routeState = _routeState.asStateFlow()
     val dashBoardState = _dashBoardState.asStateFlow()
     val historyState = _historyState.asStateFlow()
+    val walletState = _walletState.asStateFlow()
+    val addWalletState = _addWalletState.asStateFlow()
+    val errorState = _errorState.asSharedFlow()
 
     init {
         loadDashboardState()
@@ -74,10 +83,13 @@ class GlobalViewModel @Inject constructor(
                             }
                         }
                         else -> _dashBoardState.update {
+                            val data = response.data!!.filter { transaction ->
+                                transaction.date == Constants.currentDate.formattedDate
+                            }
                             it.copy(
                                 isLoading = false,
-                                transactions = response.data!!,
-                                todayExpenses = calculateExpenses(response.data)
+                                transactions = data,
+                                todayExpenses = calculateExpenses(data)
                             )
                         }
                     }
@@ -124,22 +136,33 @@ class GlobalViewModel @Inject constructor(
 
 
     fun onAddTransactionEventHandler(currentEvent: AddTransactionEvent) {
-        if (currentEvent == AddTransactionEvent.SaveTransaction) {
-            viewModelScope.launch {
-                val state = _addTransactionState.value
-                repository.insertTransaction(
-                    Transaction(
-                        title = state.titleValue,
-                        category = state.selectedCategory ?: CategoryType.Others,
-                        amount = state.expensesAmount.toFloat(),
-                        date = state.date.formattedDate,
-                        time = state.time.formattedTime,
-                        walletId = "1234",
-                    )
-                ) {
-
+        if (currentEvent is AddTransactionEvent.SaveTransaction) {
+            val state = _addTransactionState.value
+            insertData(
+                Transaction(
+                    title = state.titleValue,
+                    category = state.selectedCategory ?: CategoryType.Others,
+                    amount = state.expensesAmount,
+                    date = state.date.formattedDate,
+                    time = state.time.formattedTime,
+                    notes = state.extraNotes,
+                    walletId = state.walletId,
+                ),
+                onComplete = {
+                    _addTransactionState.value = AddTransactionState()
+                    currentEvent.onComplete()
+                },
+                onError = { error, scope ->
+                    scope.launch {
+                        _errorState.emit(
+                            ErrorState(
+                                isShowed = true,
+                                message = "${error.message}"
+                            )
+                        )
+                    }
                 }
-            }
+            )
         }
 
         _addTransactionState.update { state ->
@@ -162,60 +185,100 @@ class GlobalViewModel @Inject constructor(
                 is AddTransactionEvent.TitleChange -> state.copy(
                     titleValue = currentEvent.title
                 )
-                else -> {
+                is AddTransactionEvent.WalletChange -> state.copy(
+                    walletId = currentEvent.walletId
+                )
+                is AddTransactionEvent.SaveTransaction -> {
                     state
+                }
+
+            }
+        }
+    }
+
+    fun onAddWalletEventHandler(event: AddWalletEvent) {
+        if (event is AddWalletEvent.SaveWallet) {
+            viewModelScope.launch {
+                val state = _addWalletState.value
+                insertWallet(
+                    Wallet(
+                        walletName = state.walletName,
+                        walletAmount = state.walletAmount,
+                        walletType = state.walletType,
+                        isEnabled = true,
+                        isPrimary = false
+                    ),
+                    onComplete = {
+                        _addWalletState.value = AddWalletState()
+                        event.onComplete()
+                    }
+                )
+            }
+        } else {
+            _addWalletState.update { state ->
+                when (event) {
+                    is AddWalletEvent.AmountChange -> state.copy(walletAmount = event.amount)
+                    is AddWalletEvent.TypeChange -> state.copy(walletType = event.type)
+                    is AddWalletEvent.TitleChange -> state.copy(walletName = event.title)
+                    else -> state
+                }
+            }
+        }
+    }
+
+    private fun loadWallet() {
+        viewModelScope.launch {
+            repository.getAllWallet().collect { wallets ->
+                _walletState.update { state ->
+                    state.copy(
+                        wallets = wallets,
+                        totalNetWorth = calculateNetWorth(wallets)
+                    )
                 }
             }
         }
     }
 
     private fun calculateExpenses(transactions: List<Transaction>?): String {
-        return String.format("%.2f",
-            transactions?.map { transaction ->
-                transaction.amount
-            }?.sum()
+        return String.format(
+            "%.2f",
+            transactions?.sumOf { transaction ->
+                transaction.amount.removeComma()
+            }
         )
     }
 
-//    fun loadSectionTransactions() {
-//        viewModelScope.launch {
-//            repository.getTransactions().collect {
-//                _uiStateSectionTransaction.value = CategoryType.values().map { type ->
-//                    return@map SectionedTransaction(
-//                        type.id.toString(),
-//                        type,
-//                        it.filter { tt -> tt.category === type })
-//                }.filter { sectionedTransaction -> sectionedTransaction.sectionItems.isNotEmpty() }
-//            }
-//        }
-//    }
-
-    fun loadWallet() {
-//        viewModelScope.launch {
-//            repository.getAllWallet().collect {
-//                _uiStateWallet.value = it
-//            }
-//        }
+    private fun calculateNetWorth(wallets: List<Wallet>?): String {
+        return String.format(
+            "%.2f",
+            wallets?.sumOf { wallet ->
+                wallet.walletAmount.removeComma()
+            }
+        )
     }
 
-    fun insertData(vararg transaction: Transaction) {
+    private fun insertData(
+        vararg transaction: Transaction,
+        onComplete: () -> Unit,
+        onError: (e: Error, scope: CoroutineScope) -> Unit
+    ) {
         viewModelScope.launch {
             try {
                 repository.insertTransaction(
                     transaction = transaction
                 ) {
-                    Log.e("insertData", "success")
+                    onComplete()
                 }
             } catch (e: Exception) {
-                Log.e("insertData", "$e")
+                onError(Error(e.localizedMessage), this)
             }
         }
     }
 
-    fun insertWallet(wallet: Wallet) {
+    private fun insertWallet(wallet: Wallet, onComplete: () -> Unit) {
         viewModelScope.launch {
             repository.insertWallet(wallet) {
-
+                onComplete()
             }
         }
     }

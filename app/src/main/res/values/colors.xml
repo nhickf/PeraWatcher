@@ -2,5 +2,8 @@
 <resources>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_dark_onPrimary">#FF293414</color>
-
+    <color name="md_theme_light_tertiary">#FF52625F</color>
+    <color name="md_theme_light_surface">#FFFFFCF8</color>
+    <color name="md_theme_dark_tertiary">#FFB9CAC7</color>
+    <color name="md_theme_dark_surface">#FF1C1C1A</color>
 </resources>

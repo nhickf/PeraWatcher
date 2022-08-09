@@ -1,15 +1,19 @@
 package com.creativegrpcx.perawatcher.ui.screens
 
+import CustomDatePicker
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.text.format.DateFormat.is24HourFormat
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -18,14 +22,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -36,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.creativegrpcx.perawatcher.R
 import com.creativegrpcx.perawatcher.domain.model.Date
 import com.creativegrpcx.perawatcher.domain.model.Time
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
@@ -43,7 +46,7 @@ import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.ui.components.ChipVerticalGrid
 import com.creativegrpcx.perawatcher.ui.utils.Constants
-import java.text.DateFormat
+import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -52,21 +55,26 @@ fun AddTransactionScreen(
     viewModel: GlobalViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
+
     val dateSource = remember {
         MutableInteractionSource()
     }
-
     val timeSource = remember {
         MutableInteractionSource()
     }
+    val focusManager = LocalFocusManager.current
+
 
     val state = viewModel.addTransactionState.collectAsState().value
+    val wallets = viewModel.walletState.collectAsState().value.wallets
     val currentDate = Constants.currentDate
     val currentTime = Constants.currentTime
 
     val mDatePickerDialog = DatePickerDialog(
         LocalContext.current,
+        R.style.CalenderViewCustom,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            focusManager.clearFocus()
             viewModel.onAddTransactionEventHandler(AddTransactionEvent.DateChange(
                 Date(
                     year = mYear,
@@ -83,20 +91,20 @@ fun AddTransactionScreen(
 
     val mTimePickerDialog = TimePickerDialog(
         LocalContext.current,
+        R.style.CalenderViewCustom,
         { _: TimePicker, hour: Int, minute: Int ->
+            focusManager.clearFocus()
             viewModel.onAddTransactionEventHandler(AddTransactionEvent.TimeChange(
                 Time(
                     hourOfDay = hour,
                     minute = minute
                 )
             ))
-        }, currentTime.hourOfDay, currentTime.minute, true
+        }, currentTime.hourOfDay, currentTime.minute, false
     )
     if (timeSource.collectIsPressedAsState().value){
         mTimePickerDialog.show()
     }
-
-
 
     Column(
         modifier = Modifier
@@ -110,10 +118,11 @@ fun AddTransactionScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
 
-        Text(text = "Title")
+        TextFieldTitle(text = "Title")
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             value = state.titleValue,
+            maxLines = 2,
             label = {
                 TextFieldTextPlaceHolder(text = "Put the title here")
             },
@@ -123,16 +132,16 @@ fun AddTransactionScreen(
 
             colors = TextFieldDefaults.outlinedTextFieldColors(),
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onNext = {
-
+                onDone  = {
+                    focusManager.clearFocus()
                 }
             )
         )
 
-        Text(text = "Categories")
+        TextFieldTitle(text = "Categories")
 
         ChipVerticalGrid(
             horizontalSpacing = 8.dp,
@@ -167,13 +176,45 @@ fun AddTransactionScreen(
             }
         }
 
-        Text(text = "Expenses")
+        TextFieldTitle(text = "Expenses")
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            items(wallets){ wallet ->
+                FilterChip(
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.wrapContentSize(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector
+                                .vectorResource(id = Constants.walletIcon(wallet.walletType)),
+                            contentDescription = "",
+                        )
+                    },
+                    onClick = {
+                        viewModel.onAddTransactionEventHandler(AddTransactionEvent.WalletChange(wallet.walletId))
+                    },
+                    label = {
+                        Text(
+                            text = wallet.walletName,
+                            maxLines = 1,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    selected = state.walletId == wallet.walletId
+                )
+            }
+        }
 
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             value = state.expensesAmount,
             onValueChange = { value ->
-                viewModel.onAddTransactionEventHandler(AddTransactionEvent.AmountChange(value))
+                viewModel.onAddTransactionEventHandler(AddTransactionEvent.AmountChange(value.replace(",","").trim()))
             },
             label = {
                 TextFieldTextPlaceHolder(text = "Put the amount here")
@@ -183,6 +224,11 @@ fun AddTransactionScreen(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Decimal
             ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
+            )
         )
 
 
@@ -192,14 +238,14 @@ fun AddTransactionScreen(
                 .wrapContentHeight(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(
+            TextFieldTitle(
                 modifier = Modifier
                     .weight(1f)
                     .wrapContentHeight(),
                 text = "Date"
             )
 
-            Text(
+            TextFieldTitle(
                 modifier = Modifier
                     .weight(1f)
                     .wrapContentHeight(),
@@ -243,16 +289,11 @@ fun AddTransactionScreen(
             )
         }
 
-        Text(
-            text = "Optional"
-        )
-
-        Text(
+        TextFieldTitle(
             text = "Notes"
         )
-
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             value = state.extraNotes,
             onValueChange = { value ->
                 viewModel.onAddTransactionEventHandler(
@@ -268,7 +309,10 @@ fun AddTransactionScreen(
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction)
+                    focusManager.clearFocus()
+                    viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction{
+                        viewModel.updateCurrentRoute(null)
+                    })
                 }
             )
         )
@@ -278,12 +322,19 @@ fun AddTransactionScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             onClick = {  
-                viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction)
+                viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction{
+                    viewModel.updateCurrentRoute(null)
+                })
             }) {
             Text(text = "Press to save your transaction")
         }
 
     }
+
+    BackHandler {
+        viewModel.updateCurrentRoute(null)
+    }
+
 }
 @Composable
 fun TextFieldTextPlaceHolder(
@@ -295,5 +346,18 @@ fun TextFieldTextPlaceHolder(
     Text(
         text = text,
         fontWeight = fontWeight,
+    )
+}
+
+@Composable
+fun TextFieldTitle(
+    text : String,
+    modifier: Modifier = Modifier
+){
+    Text(
+        modifier = modifier,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Medium,
+        text = text
     )
 }

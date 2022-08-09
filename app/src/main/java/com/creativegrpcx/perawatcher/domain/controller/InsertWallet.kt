@@ -7,6 +7,7 @@ import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.types.WalletType
 import com.creativegrpcx.perawatcher.domain.types.enumContains
 import com.creativegrpcx.perawatcher.domain.utils.GeneralException
+import com.creativegrpcx.perawatcher.ui.utils.removeComma
 
 class InsertWallet(private val repository: IDataRepository.ILocalDataSource) {
 
@@ -15,9 +16,7 @@ class InsertWallet(private val repository: IDataRepository.ILocalDataSource) {
 
         if (wallets.isEmpty()) {
             throw GeneralException.EmptyTransaction(
-                error =  Error(
-                    "Could not save empty wallet."
-                )
+                "Could not save empty wallet."
             )
         }
 
@@ -25,20 +24,19 @@ class InsertWallet(private val repository: IDataRepository.ILocalDataSource) {
         wallets.forEachIndexed { _, wallet ->
             when (false) {
                 (wallet.walletName.isNotEmpty() && wallet.walletName.isNotBlank()) -> throw GeneralException.IncompleteTransaction(
-                    error = Error("Please fill the name for this wallet.")
+                    "Please fill the name for this wallet."
 
                 )
-                (wallet.walletAmount > 0) -> throw GeneralException.IncompleteTransaction(
-                    error =   Error("Please unable to put initial amount for wallet.")
+                (wallet.walletAmount.removeComma() > 0) -> throw GeneralException.IncompleteTransaction(
+                    "Please unable to put initial amount for wallet."
                 )
                 else -> {
                     if (repository.insertWallet(wallet).isEmpty()) {
-                        throw GeneralException.FailedExecute(Error("Error occurred unable to save wallet!"))
+                        throw GeneralException.FailedExecute("Error occurred unable to save wallet!")
                     }
                     onComplete()
                 }
             }
         }
-
     }
 }
