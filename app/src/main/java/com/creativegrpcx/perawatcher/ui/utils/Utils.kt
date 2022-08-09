@@ -8,6 +8,5 @@ fun String.formatDecimalSeparator(): String {
 }
 
 fun String.removeComma() : Double{
-    return toString().replace(",","").trim().toDouble()
+    return if (toString().isEmpty() || toString().isBlank())  0.00 else  toString().replace(",","").trim().toDouble()
 }
-

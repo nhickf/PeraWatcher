@@ -34,7 +34,10 @@ fun WalletItem(
 ) {
 
     Card(
-        Modifier.wrapContentHeight()
+        Modifier.wrapContentHeight(),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 2.dp
+        )
     ){
         Column(
             Modifier.padding(16.dp),
