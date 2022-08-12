@@ -1,11 +1,7 @@
 package com.creativegrpcx.perawatcher.domain.controller
 
-import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.domain.data.IDataRepository
-import com.creativegrpcx.perawatcher.domain.types.CategoryType
-import com.creativegrpcx.perawatcher.domain.types.WalletType
-import com.creativegrpcx.perawatcher.domain.types.enumContains
 import com.creativegrpcx.perawatcher.domain.utils.GeneralException
 import com.creativegrpcx.perawatcher.ui.utils.removeComma
 

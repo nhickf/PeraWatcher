@@ -30,6 +30,7 @@ import com.creativegrpcx.perawatcher.domain.types.WalletType
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.creativegrpcx.perawatcher.domain.utils.AddWalletEvent
+import com.creativegrpcx.perawatcher.ui.utils.Constants.TextFieldTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +54,7 @@ fun AddWalletScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
 
-        Text(text = "Title")
+        TextFieldTitle(text = "Title")
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.value.walletName,
@@ -75,7 +76,7 @@ fun AddWalletScreen(
             )
         )
 
-        Text(text = "Type")
+        TextFieldTitle(text = "Type")
 
         ChipVerticalGrid(
             horizontalSpacing = 8.dp,
@@ -110,7 +111,7 @@ fun AddWalletScreen(
             }
         }
 
-        Text(text = "Initial Amount")
+        TextFieldTitle(text = "Initial Amount")
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),

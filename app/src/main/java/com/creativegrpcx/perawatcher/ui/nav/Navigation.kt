@@ -99,9 +99,23 @@ fun ApplicationRoute(
                 )
             }
         )
+
+        composable(
+            route = NavigationRoute.PopUpAddWallet.withoutArgs.route,
+            enterTransition = {
+                slideInVertically (
+                    initialOffsetY = { 1000 }
+                )
+            },
+            content = {
+               PopUpFullScreen (
+                   viewModel =  viewModel,
+                )
+            }
+        )
     }
 
-    BackHandler() {
+    BackHandler {
         viewModel.updateCurrentRoute(null)
     }
 

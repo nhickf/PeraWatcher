@@ -59,22 +59,18 @@ fun WalletScreen(
             IconButton(onClick = {
                 viewModel.updateCurrentRoute(NavigationRoute.AddWallet.withoutArgs)
             }) {
-
                 Icon(imageVector = Icons.Default.AddCircle, contentDescription = "")
             }
         }
-
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(bottom = 16.dp)
         )
         {
-
-            items(state.value.wallets){
-                WalletItem(it)
+            items(state.value.wallets){ walletTransaction->
+                WalletItem(walletTransaction.wallet)
             }
-
         }
     }
 
@@ -83,7 +79,7 @@ fun WalletScreen(
 @Composable
 @Preview(showBackground = true)
 fun DefaultWalletScreen(){
-    AppTheme() {
+    AppTheme {
         WalletScreen()
     }
 

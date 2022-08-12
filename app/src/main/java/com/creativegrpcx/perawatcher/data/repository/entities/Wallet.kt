@@ -14,12 +14,9 @@ data class Wallet(
     val walletAmount : String,
     val walletType : WalletType,
     val isEnabled : Boolean,
-    val isPrimary : Boolean
-
+    val isPrimary : Boolean,
+    @PrimaryKey(autoGenerate = false) val walletId : String
 ){
-    @PrimaryKey(autoGenerate = false) var walletId : String = UUID.randomUUID().toString()
-
-
     @Ignore
     val formatWalletAmount = "$${this.walletAmount.removeComma().toString().formatDecimalSeparator()}"
 

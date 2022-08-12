@@ -9,12 +9,14 @@ sealed class NavigationRoute(
     object Wallet : NavigationRoute(ScreenRoute( route = "wallet", name = "wallet"))
     object AddTransaction : NavigationRoute(ScreenRoute( route = "add_trans", name = "add_trans"))
     object AddWallet : NavigationRoute(ScreenRoute( route = "add_wallet", name = "add_wallet"))
+    object PopUpAddWallet : NavigationRoute(ScreenRoute( route = "pop_up_add_wallet", name = "pop_up_add_wallet", isPopUp = true))
 
     fun withArgs(vararg args : Any): ScreenRoute{
         return route.copy(
             args = listOf(args)
         )
     }
+
 
     val withoutArgs = route
 }
@@ -23,5 +25,6 @@ data class ScreenRoute(
     val route : String,
     val name : String,
     val args : List<Any>? = null,
-    val isSelected : Boolean = false
+    val isSelected : Boolean = false,
+    val isPopUp : Boolean = false
 )

@@ -20,7 +20,6 @@ class GetTransaction(private val repository: IDataRepository.ILocalDataSource) {
                     _data = emptyList()
                 )
             )
-            delay(1000)
              repository.getTransactions().collect {
                 emit(
                     Response.Success(

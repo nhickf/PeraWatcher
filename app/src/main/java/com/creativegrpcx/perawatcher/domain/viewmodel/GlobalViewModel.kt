@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.domain.data.DataRepository
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
+import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 import com.creativegrpcx.perawatcher.domain.model.*
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
@@ -19,6 +20,7 @@ import com.creativegrpcx.perawatcher.ui.utils.removeComma
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class GlobalViewModel @Inject constructor(
@@ -51,7 +53,15 @@ class GlobalViewModel @Inject constructor(
     fun updateCurrentRoute(newRoute: ScreenRoute?) {
         _routeState.update { screen ->
             screen.copy(
-                oldRoute = if (newRoute == null) null else screen.currentRoute,
+                oldRoute = if (newRoute == null) {
+                    null
+                } else {
+                    if(screen.currentRoute.isPopUp) {
+                        screen.oldRoute
+                    } else {
+                        screen.currentRoute
+                    }
+                } ,
                 currentRoute = newRoute ?: screen.oldRoute ?: NavigationRoute.Dashboard.withoutArgs,
                 isRouteChange = newRoute != null && newRoute != screen.currentRoute,
                 isNavigateUp = newRoute == null
@@ -206,11 +216,22 @@ class GlobalViewModel @Inject constructor(
                         walletAmount = state.walletAmount,
                         walletType = state.walletType,
                         isEnabled = true,
-                        isPrimary = false
+                        isPrimary = false,
+                        walletId =  UUID.randomUUID().toString()
                     ),
                     onComplete = {
                         _addWalletState.value = AddWalletState()
                         event.onComplete()
+                    },
+                    onError = { error, scope ->
+                        scope.launch {
+                            _errorState.emit(
+                                ErrorState(
+                                    isShowed = true,
+                                    message = "${error.message}"
+                                )
+                            )
+                        }
                     }
                 )
             }
@@ -228,14 +249,36 @@ class GlobalViewModel @Inject constructor(
 
     private fun loadWallet() {
         viewModelScope.launch {
-            repository.getAllWallet().collect { wallets ->
-                _walletState.update { state ->
-                    state.copy(
-                        wallets = wallets,
-                        totalNetWorth = calculateNetWorth(wallets)
-                    )
-                }
-            }
+            repository.getAllWallet()
+                .onEach { response ->
+                    when (response) {
+                        is Response.Loading -> {
+                            _walletState.update {
+                                it.copy(
+                                    isLoading = response.isLoading,
+                                    wallets = response.data!!,
+                                    totalNetWorth = calculateNetWorth(response.data)
+                                )
+                            }
+                        }
+                        is Response.Error -> {
+                            _walletState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    wallets = response.data!!,
+                                    error = Error(response.exception),
+                                )
+                            }
+                        }
+                        else -> _walletState.update {
+                            it.copy(
+                                isLoading = false,
+                                wallets = response.data!!,
+                                totalNetWorth = calculateNetWorth(response.data)
+                            )
+                        }
+                    }
+                }.collect()
         }
     }
 
@@ -248,11 +291,13 @@ class GlobalViewModel @Inject constructor(
         )
     }
 
-    private fun calculateNetWorth(wallets: List<Wallet>?): String {
+    private fun calculateNetWorth(wallets: List<WalletTransaction>?): String {
         return String.format(
             "%.2f",
-            wallets?.sumOf { wallet ->
-                wallet.walletAmount.removeComma()
+            wallets?.sumOf { walletTransaction ->
+                walletTransaction
+                    .wallet.walletAmount
+                    .removeComma()
             }
         )
     }
@@ -275,10 +320,20 @@ class GlobalViewModel @Inject constructor(
         }
     }
 
-    private fun insertWallet(wallet: Wallet, onComplete: () -> Unit) {
+    private fun insertWallet(
+        vararg wallet: Wallet,
+        onComplete: () -> Unit,
+        onError: (e: Error, scope: CoroutineScope) -> Unit
+    ) {
         viewModelScope.launch {
-            repository.insertWallet(wallet) {
-                onComplete()
+            try {
+                repository.insertWallet(
+                    wallet = wallet
+                ) {
+                    onComplete()
+                }
+            } catch (e: Exception) {
+                onError(Error(e.localizedMessage), this)
             }
         }
     }

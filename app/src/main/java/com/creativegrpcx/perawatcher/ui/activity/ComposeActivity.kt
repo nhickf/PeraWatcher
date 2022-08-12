@@ -67,8 +67,9 @@ fun MainScreen(
 
     if (state.isRouteChange) navigationController.navigate(state.currentRoute.route) {
         launchSingleTop = true
-        if (state.oldRoute != null) popUpTo(state.oldRoute.route)
-
+        if (state.oldRoute != null){
+            popUpTo(state.oldRoute.route)
+        }
     }
     if (state.isNavigateUp) navigationController.navigateUp()
 
