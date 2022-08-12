@@ -27,10 +27,13 @@ fun ApplicationRoute(
 
     AnimatedNavHost(
         modifier = Modifier
-            .padding(PaddingValues(
-                start = 16.dp,
-                top = padding.calculateTopPadding(),
-                end = 16.dp))
+            .padding(
+                PaddingValues(
+                    start = 16.dp,
+                    top = padding.calculateTopPadding(),
+                    end = 16.dp
+                )
+            )
             .fillMaxSize(),
         navController = navHostController,
         startDestination = NavigationRoute.Dashboard.withoutArgs.route){
@@ -50,7 +53,7 @@ fun ApplicationRoute(
                 slideInHorizontally(initialOffsetX = { 1000 })
             },
             content = {
-
+                StatisticScreen()
             }
 
         )
@@ -113,6 +116,7 @@ fun ApplicationRoute(
                 )
             }
         )
+
     }
 
     BackHandler {

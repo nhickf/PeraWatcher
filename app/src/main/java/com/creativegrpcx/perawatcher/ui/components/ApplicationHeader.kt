@@ -47,12 +47,12 @@ fun ApplicationHeader(
             }
             else -> {
                 IconButton(onClick = {
-                    onRouteChange(
-                        ScreenRoute(
-                            name = "profile",
-                            route = "profile"
-                        )
-                    )
+//                    onRouteChange(
+//                        ScreenRoute(
+//                            name = "profile",
+//                            route = "profile"
+//                        )
+//                    )
                 }) {
 
                     Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "")
