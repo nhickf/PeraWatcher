@@ -9,13 +9,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 import com.creativegrpcx.perawatcher.ui.utils.Constants
@@ -45,6 +42,9 @@ fun ApplicationHeader(
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "")
                 }
             }
+            NavigationRoute.PopUpAddWallet.withoutArgs.route ->{
+
+            }
             else -> {
                 IconButton(onClick = {
                     onRouteChange(
@@ -65,7 +65,7 @@ fun ApplicationHeader(
                     contentPadding = PaddingValues(start = 16.dp, end = 8.dp),
                 )
                 {
-                    items(Constants.ScreenRoutes) { route ->
+                    items(Constants.MainScreenRoutes) { route ->
                         NavigationChipItem(
                             routeContent = route,
                             currentRoute = newRoute,

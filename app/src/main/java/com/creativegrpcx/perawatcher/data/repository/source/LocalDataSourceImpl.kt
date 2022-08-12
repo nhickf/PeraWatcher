@@ -4,6 +4,7 @@ import com.creativegrpcx.perawatcher.data.repository.dao.TransactionDao
 import com.creativegrpcx.perawatcher.data.repository.dao.WalletDao
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 import com.creativegrpcx.perawatcher.domain.data.IDataRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -28,7 +29,7 @@ class LocalDataSourceImpl @Inject constructor(
         return transactionDao.getAllTransactions()
     }
 
-    override suspend fun getTransaction(transactionId: Int): Flow<Transaction> {
+    override  fun getTransaction(transactionId: Int): Flow<Transaction> {
         return transactionDao.getTransaction(transactionId)
     }
 
@@ -44,11 +45,11 @@ class LocalDataSourceImpl @Inject constructor(
       return  walletDao.updateWallet(*wallet)
     }
 
-    override suspend fun getAllWallet(): Flow<List<Wallet>> {
+    override  fun getAllWallet(): Flow<List<WalletTransaction>> {
        return walletDao.getAllWallet()
     }
 
-    override suspend fun getWallet(walletId: Int): Flow<Wallet> {
+    override  fun getWallet(walletId: Int): Flow<Wallet> {
        return walletDao.getWallet(walletId)
     }
 

@@ -29,7 +29,8 @@ fun WalletItem(
         "21,300",
         walletType = WalletType.CASH,
         true,
-        isPrimary = false
+        isPrimary = false,
+        walletId = "132"
     )
 ) {
 

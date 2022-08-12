@@ -2,7 +2,6 @@ package com.creativegrpcx.perawatcher.data.repository.entities
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import androidx.room.Transaction
 
 data class WalletTransaction(
 

@@ -20,7 +20,7 @@ import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 
 object Constants {
 
-    val ScreenRoutes = listOf(
+    val MainScreenRoutes = listOf(
         ScreenRoute(route = "dashboard", name = "dashboard", isSelected = true),
         ScreenRoute(route = "statistics", name = "statistics"),
         ScreenRoute(route = "history", name = "history"),
@@ -68,4 +68,16 @@ object Constants {
         minute = mCalendar.get(Calendar.MINUTE)
     )
 
+    @Composable
+    fun TextFieldTitle(
+        text : String,
+        modifier: Modifier = Modifier
+    ){
+        Text(
+            modifier = modifier,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+            text = text
+        )
+    }
 }

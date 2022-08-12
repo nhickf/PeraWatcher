@@ -17,8 +17,8 @@ import com.creativegrpcx.perawatcher.ui.utils.Constants
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationChipItem(
-    routeContent : ScreenRoute = Constants.ScreenRoutes[0],
-    currentRoute : ScreenRoute = Constants.ScreenRoutes[0],
+    routeContent : ScreenRoute = Constants.MainScreenRoutes[0],
+    currentRoute : ScreenRoute = Constants.MainScreenRoutes[0],
     onClick : (route : ScreenRoute) -> Unit = {}
 ) {
 

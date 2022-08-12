@@ -2,7 +2,9 @@ package com.creativegrpcx.perawatcher.domain.data
 
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
+import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 import com.creativegrpcx.perawatcher.domain.controller.GetTransaction
+import com.creativegrpcx.perawatcher.domain.controller.GetWalletTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertTransaction
 import com.creativegrpcx.perawatcher.domain.controller.InsertWallet
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
@@ -30,7 +32,7 @@ class DataRepository @Inject constructor(private val localDataSource: IDataRepos
          return GetTransaction(localDataSource)(categories = categories)
     }
 
-     suspend fun getTransaction(transactionId: Int) : Flow<Transaction> {
+    fun getTransaction(transactionId: Int) : Flow<Transaction> {
        return localDataSource.getTransaction(transactionId)
     }
 
@@ -46,11 +48,12 @@ class DataRepository @Inject constructor(private val localDataSource: IDataRepos
         localDataSource.updateWallet(*wallet)
     }
 
-     suspend fun getAllWallet(): Flow<List<Wallet>>{
-       return localDataSource.getAllWallet()
+     suspend fun getAllWallet(): Flow<Response<List<WalletTransaction>>> {
+       return GetWalletTransaction(repository = localDataSource)()
+
     }
 
-     suspend fun getWallet(walletId: Int) : Flow<Wallet> {
+    fun getWallet(walletId: Int) : Flow<Wallet> {
        return localDataSource.getWallet(walletId)
     }
 }

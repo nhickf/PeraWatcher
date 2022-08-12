@@ -2,6 +2,7 @@ package com.creativegrpcx.perawatcher.data.repository.dao
 
 import androidx.room.*
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,6 +22,5 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE transactionId == :transactionId")
     fun getTransaction(transactionId: Int) : Flow<Transaction>
-
 
 }

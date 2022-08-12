@@ -1,13 +1,10 @@
 package com.creativegrpcx.perawatcher.ui.screens
 
-import CustomDatePicker
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.text.format.DateFormat.is24HourFormat
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,8 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,8 +40,10 @@ import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
 import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.ui.components.ChipVerticalGrid
+import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.utils.Constants
-import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
+import com.creativegrpcx.perawatcher.ui.utils.Constants.TextFieldTitle
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -62,9 +59,8 @@ fun AddTransactionScreen(
     val timeSource = remember {
         MutableInteractionSource()
     }
+
     val focusManager = LocalFocusManager.current
-
-
     val state = viewModel.addTransactionState.collectAsState().value
     val wallets = viewModel.walletState.collectAsState().value.wallets
     val currentDate = Constants.currentDate
@@ -120,7 +116,9 @@ fun AddTransactionScreen(
 
         TextFieldTitle(text = "Title")
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = state.titleValue,
             maxLines = 2,
             label = {
@@ -178,40 +176,50 @@ fun AddTransactionScreen(
 
         TextFieldTitle(text = "Expenses")
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ){
-            items(wallets){ wallet ->
-                FilterChip(
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier.wrapContentSize(),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = ImageVector
-                                .vectorResource(id = Constants.walletIcon(wallet.walletType)),
-                            contentDescription = "",
-                        )
-                    },
-                    onClick = {
-                        viewModel.onAddTransactionEventHandler(AddTransactionEvent.WalletChange(wallet.walletId))
-                    },
-                    label = {
-                        Text(
-                            text = wallet.walletName,
-                            maxLines = 1,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Normal,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                    selected = state.walletId == wallet.walletId
-                )
+        if(wallets.isNotEmpty()){
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ){
+                items(wallets){ walletTransaction ->
+                    val wallet = walletTransaction.wallet
+                    FilterChip(
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier.wrapContentSize(),
+                        leadingIcon = {
+                            Icon(
+                                imageVector = ImageVector
+                                    .vectorResource(id = Constants.walletIcon(wallet.walletType)),
+                                contentDescription = "",
+                            )
+                        },
+                        onClick = {
+                            viewModel.onAddTransactionEventHandler(AddTransactionEvent.WalletChange(wallet.walletId))
+                        },
+                        label = {
+                            Text(
+                                text = wallet.walletName,
+                                maxLines = 1,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Normal,
+                                overflow = TextOverflow.Ellipsis,
+                                textAlign = TextAlign.Center
+                            )
+                        },
+                        selected = state.walletId == wallet.walletId
+                    )
+                }
+            }
+        }else{
+            LaunchedEffect(true) {
+                viewModel.updateCurrentRoute(NavigationRoute.PopUpAddWallet.withoutArgs)
             }
         }
 
+
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = state.expensesAmount,
             onValueChange = { value ->
                 viewModel.onAddTransactionEventHandler(AddTransactionEvent.AmountChange(value.replace(",","").trim()))
@@ -230,7 +238,6 @@ fun AddTransactionScreen(
                 }
             )
         )
-
 
         Row(
             modifier = Modifier
@@ -293,7 +300,9 @@ fun AddTransactionScreen(
             text = "Notes"
         )
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             value = state.extraNotes,
             onValueChange = { value ->
                 viewModel.onAddTransactionEventHandler(
@@ -339,25 +348,11 @@ fun AddTransactionScreen(
 @Composable
 fun TextFieldTextPlaceHolder(
     text: String,
-    fontSize: TextUnit = 12.sp,
     fontWeight: FontWeight = FontWeight.Normal,
 
     ){
     Text(
         text = text,
         fontWeight = fontWeight,
-    )
-}
-
-@Composable
-fun TextFieldTitle(
-    text : String,
-    modifier: Modifier = Modifier
-){
-    Text(
-        modifier = modifier,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.Medium,
-        text = text
     )
 }

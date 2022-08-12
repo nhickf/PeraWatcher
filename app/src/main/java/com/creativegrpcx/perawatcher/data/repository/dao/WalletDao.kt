@@ -2,6 +2,7 @@ package com.creativegrpcx.perawatcher.data.repository.dao
 
 import androidx.room.*
 import com.creativegrpcx.perawatcher.data.repository.entities.Wallet
+import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,8 +18,9 @@ interface WalletDao {
     suspend fun updateWallet(vararg transaction: Wallet) : Int
 
     @Query("SELECT * FROM wallet ORDER BY walletId DESC")
-    fun getAllWallet() : Flow<List<Wallet>>
+    fun getAllWallet() : Flow<List<WalletTransaction>>
 
     @Query("SELECT * FROM wallet WHERE walletId == :walletId")
     fun getWallet(walletId: Int) : Flow<Wallet>
+
 }

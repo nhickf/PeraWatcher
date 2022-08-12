@@ -89,7 +89,7 @@ fun DashboardScreen(
 @Composable
 @Preview(showBackground = true)
 fun DefaultDashboardScreen(){
-    AppTheme() {
+    AppTheme {
         DashboardScreen(null)
     }
 
