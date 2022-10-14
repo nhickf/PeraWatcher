@@ -21,7 +21,6 @@ fun NavigationChipItem(
     currentRoute : ScreenRoute = Constants.MainScreenRoutes[0],
     onClick : (route : ScreenRoute) -> Unit = {}
 ) {
-
     ElevatedFilterChip(
         shape = RoundedCornerShape(16.dp),
         border = FilterChipDefaults.filterChipBorder(
@@ -42,6 +41,4 @@ fun NavigationChipItem(
         },
         selected = currentRoute == routeContent
     )
-
-
 }

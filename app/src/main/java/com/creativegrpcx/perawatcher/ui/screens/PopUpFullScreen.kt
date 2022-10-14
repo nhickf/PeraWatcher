@@ -10,32 +10,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.isPopupLayout
-import androidx.navigation.NavController
 import com.creativegrpcx.perawatcher.R
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
-import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
 
-@Preview
-@Composable
-fun DefaultPopUpScreen(){
-    AppTheme {
-        PopUpFullScreen(viewModel = androidx.lifecycle.viewmodel.compose.viewModel())
-    }
-}
+
 
 @Composable
 fun PopUpFullScreen(
-    viewModel: GlobalViewModel,
-    content: @Composable ColumnScope.() -> Unit = { AddWalletPopUp(viewModel) }){
+    content: @Composable ColumnScope.() -> Unit = { AddWalletPopUp() }){
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -47,9 +34,7 @@ fun PopUpFullScreen(
 }
 
 @Composable
-fun AddWalletPopUp(
-    viewModel: GlobalViewModel
-){
+fun AddWalletPopUp(){
     Image(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,7 +58,6 @@ fun AddWalletPopUp(
 
     TextButton(
         onClick = {
-          viewModel.updateCurrentRoute(NavigationRoute.AddWallet.withoutArgs)
         },
     ) {
         Text(text = "Proceed")
