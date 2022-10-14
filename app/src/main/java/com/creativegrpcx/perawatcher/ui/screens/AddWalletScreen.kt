@@ -1,6 +1,5 @@
 package com.creativegrpcx.perawatcher.ui.screens
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,16 +26,16 @@ import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.ui.components.ChipVerticalGrid
 import com.creativegrpcx.perawatcher.ui.utils.Constants
 import com.creativegrpcx.perawatcher.domain.types.WalletType
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.creativegrpcx.perawatcher.domain.utils.AddWalletEvent
+import com.creativegrpcx.perawatcher.domain.viewmodel.AddWalletViewModel
 import com.creativegrpcx.perawatcher.ui.utils.Constants.TextFieldTitle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
 fun AddWalletScreen(
-    viewModel: GlobalViewModel = viewModel()
+    viewModel: AddWalletViewModel = viewModel()
 ) {
 
     val scrollState = rememberScrollState()
@@ -130,8 +129,7 @@ fun AddWalletScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    viewModel.onAddWalletEventHandler(AddWalletEvent.SaveWallet{
-                        viewModel.updateCurrentRoute(null)
+                    viewModel.onAddWalletEventHandler(AddWalletEvent.SaveWallet {
                     })
                 }
             )
@@ -142,16 +140,11 @@ fun AddWalletScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
             onClick = {
-                viewModel.onAddWalletEventHandler(AddWalletEvent.SaveWallet{
-                    viewModel.updateCurrentRoute(null)
+                viewModel.onAddWalletEventHandler(AddWalletEvent.SaveWallet {
                 })
             }) {
             Text(text = "Press to save your transaction")
         }
 
-    }
-
-    BackHandler {
-        viewModel.updateCurrentRoute(null)
     }
 }

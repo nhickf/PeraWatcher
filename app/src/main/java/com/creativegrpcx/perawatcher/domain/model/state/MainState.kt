@@ -1,4 +1,4 @@
-package com.creativegrpcx.perawatcher.domain.model
+package com.creativegrpcx.perawatcher.domain.model.state
 
 sealed class MainState{
     open val isLoading : Boolean = false

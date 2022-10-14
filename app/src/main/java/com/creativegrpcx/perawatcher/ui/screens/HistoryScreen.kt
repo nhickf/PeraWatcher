@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,17 +21,14 @@ import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.ui.components.TransactionItem
 import com.creativegrpcx.perawatcher.ui.shared.TextIcon
 import com.creativegrpcx.perawatcher.R
-import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
-import com.creativegrpcx.perawatcher.domain.types.CategoryType
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
+import com.creativegrpcx.perawatcher.domain.viewmodel.HistoryViewModel
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
 import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
-import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen(
-    viewModel: GlobalViewModel?
+    viewModel: HistoryViewModel?
 ) {
 //    viewModel?.loadHistoryScreen()
 

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.R
@@ -38,18 +36,16 @@ import com.creativegrpcx.perawatcher.domain.model.Date
 import com.creativegrpcx.perawatcher.domain.model.Time
 import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
+import com.creativegrpcx.perawatcher.domain.viewmodel.AddTransactionViewModel
 import com.creativegrpcx.perawatcher.ui.components.ChipVerticalGrid
-import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.utils.Constants
 import com.creativegrpcx.perawatcher.ui.utils.Constants.TextFieldTitle
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun AddTransactionScreen(
-    viewModel: GlobalViewModel = viewModel()
+    viewModel: AddTransactionViewModel = viewModel()
 ) {
     val scrollState = rememberScrollState()
 
@@ -61,8 +57,7 @@ fun AddTransactionScreen(
     }
 
     val focusManager = LocalFocusManager.current
-    val state = viewModel.addTransactionState.collectAsState().value
-    val wallets = viewModel.walletState.collectAsState().value.wallets
+    val state by viewModel.addTransactionState.collectAsState()
     val currentDate = Constants.currentDate
     val currentTime = Constants.currentTime
 
@@ -176,42 +171,36 @@ fun AddTransactionScreen(
 
         TextFieldTitle(text = "Expenses")
 
-        if(wallets.isNotEmpty()){
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ){
-                items(wallets){ walletTransaction ->
-                    val wallet = walletTransaction.wallet
-                    FilterChip(
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier.wrapContentSize(),
-                        leadingIcon = {
-                            Icon(
-                                imageVector = ImageVector
-                                    .vectorResource(id = Constants.walletIcon(wallet.walletType)),
-                                contentDescription = "",
-                            )
-                        },
-                        onClick = {
-                            viewModel.onAddTransactionEventHandler(AddTransactionEvent.WalletChange(wallet.walletId))
-                        },
-                        label = {
-                            Text(
-                                text = wallet.walletName,
-                                maxLines = 1,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                overflow = TextOverflow.Ellipsis,
-                                textAlign = TextAlign.Center
-                            )
-                        },
-                        selected = state.walletId == wallet.walletId
-                    )
-                }
-            }
-        }else{
-            LaunchedEffect(true) {
-                viewModel.updateCurrentRoute(NavigationRoute.PopUpAddWallet.withoutArgs)
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ){
+            items(state.wallet){ walletTransaction ->
+                val wallet = walletTransaction.wallet
+                FilterChip(
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.wrapContentSize(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector
+                                .vectorResource(id = Constants.walletIcon(wallet.walletType)),
+                            contentDescription = "",
+                        )
+                    },
+                    onClick = {
+                        viewModel.onAddTransactionEventHandler(AddTransactionEvent.WalletChange(wallet.walletId))
+                    },
+                    label = {
+                        Text(
+                            text = wallet.walletName,
+                            maxLines = 1,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    selected = state.walletId == wallet.walletId
+                )
             }
         }
 
@@ -319,9 +308,7 @@ fun AddTransactionScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction{
-                        viewModel.updateCurrentRoute(null)
-                    })
+
                 }
             )
         )
@@ -330,20 +317,13 @@ fun AddTransactionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            onClick = {  
-                viewModel.onAddTransactionEventHandler(AddTransactionEvent.SaveTransaction{
-                    viewModel.updateCurrentRoute(null)
-                })
+            onClick = {
+
             }) {
             Text(text = "Press to save your transaction")
         }
 
     }
-
-    BackHandler {
-        viewModel.updateCurrentRoute(null)
-    }
-
 }
 @Composable
 fun TextFieldTextPlaceHolder(
