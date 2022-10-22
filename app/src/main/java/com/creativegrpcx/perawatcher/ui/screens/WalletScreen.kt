@@ -13,19 +13,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModel
 import com.creativegrpcx.perawatcher.ui.components.WalletItem
 import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
-import com.creativegrpcx.perawatcher.ui.theme.AppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.creativegrpcx.perawatcher.domain.viewmodel.WalletViewModel
 import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
 
 @Composable
 fun WalletScreen(
-    viewModel: GlobalViewModel = viewModel()
+    navigation : NavController,
+    viewModel: WalletViewModel = viewModel()
 ) {
 
     val state = viewModel.walletState.collectAsState()
@@ -57,7 +57,7 @@ fun WalletScreen(
                 fontWeight = FontWeight.SemiBold
             )
             IconButton(onClick = {
-                viewModel.updateCurrentRoute(NavigationRoute.AddWallet.withoutArgs)
+                navigation.navigate(NavigationRoute.AddWallet.withoutArgs.route)
             }) {
                 Icon(imageVector = Icons.Default.AddCircle, contentDescription = "")
             }
@@ -72,15 +72,6 @@ fun WalletScreen(
                 WalletItem(walletTransaction.wallet)
             }
         }
-    }
-
-}
-
-@Composable
-@Preview(showBackground = true)
-fun DefaultWalletScreen(){
-    AppTheme {
-        WalletScreen()
     }
 
 }

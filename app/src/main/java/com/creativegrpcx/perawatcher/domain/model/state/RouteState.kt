@@ -1,6 +1,5 @@
-package com.creativegrpcx.perawatcher.domain.model
+package com.creativegrpcx.perawatcher.domain.model.state
 
-import androidx.navigation.NavHostController
 import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
 import com.creativegrpcx.perawatcher.ui.nav.ScreenRoute
 

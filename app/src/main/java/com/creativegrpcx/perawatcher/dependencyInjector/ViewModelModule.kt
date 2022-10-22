@@ -15,4 +15,5 @@ class ViewModelModule {
     fun providesGlobalViewModelFactory (application: Application,
                                         userRepository: DataRepository
     ) = GlobalViewModelFactory(application,userRepository)
+
 }

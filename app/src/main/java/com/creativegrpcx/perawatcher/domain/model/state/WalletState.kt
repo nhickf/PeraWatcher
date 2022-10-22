@@ -1,4 +1,4 @@
-package com.creativegrpcx.perawatcher.domain.model
+package com.creativegrpcx.perawatcher.domain.model.state
 
 import com.creativegrpcx.perawatcher.data.repository.entities.WalletTransaction
 
@@ -8,4 +8,4 @@ data class WalletState(
     override val error: Error?=null,
     val wallets : List<WalletTransaction> = emptyList(),
     val totalNetWorth : String = "0.00"
-):MainState()
+): MainState()

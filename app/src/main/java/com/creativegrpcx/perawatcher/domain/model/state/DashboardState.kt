@@ -1,4 +1,4 @@
-package com.creativegrpcx.perawatcher.domain.model
+package com.creativegrpcx.perawatcher.domain.model.state
 
 import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
 
