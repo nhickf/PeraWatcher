@@ -1,92 +1,127 @@
 package com.creativegrpcx.perawatcher.ui.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.viewmodel.DashboardViewModel
-import com.creativegrpcx.perawatcher.ui.components.TransactionItem
-import com.creativegrpcx.perawatcher.ui.nav.NavigationRoute
-import com.creativegrpcx.perawatcher.ui.theme.AppTheme
-import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
+import com.creativegrpcx.perawatcher.ui.components.ActivityCardItem
+import com.creativegrpcx.perawatcher.ui.components.ActivityItem
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 
+@OptIn(ExperimentalFoundationApi::class)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel,
-    navController: NavController
+    id: Int = 1,
+    navController: DestinationsNavigator
 ) {
+
+    val viewModel: DashboardViewModel = hiltViewModel()
     val state by viewModel.dashBoardState.collectAsState()
 
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+
+        item {
+            HeaderSection()
+        }
+
+        item {
+            Text(
+                text = "Insights",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp
+            )
+        }
+
+        item {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                items(2) {
+                    ActivityCardItem()
+                }
+            }
+        }
+
+        item {
+            Text(
+                text = "Transaction",
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp
+            )
+        }
+
+        items(10) {
+            ActivityItem(
+                Transaction(
+                    title = "Sample ${it}",
+                    amount = "122.00",
+                    date = "2022-08-03",
+                    time = "14:56:00",
+                    walletId = "1234",
+                    category = CategoryType.Appliances
+                )
+            )
+        }
+
+    }
+}
+
+@Composable
+private fun HeaderSection() {
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.Start,
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-
         Text(
-            text = "Today Expenses",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium,
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                    )
+                ) {
+                    append("Sat, 25 July\n")
+                }
+                append("Good Day,\n")
+                append("Nhick.")
+            },
+
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 24.sp,
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .wrapContentHeight(),
-                text = "$${state.todayExpenses.formatDecimalSeparator()}",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            IconButton(onClick = {
-                navController.navigate(route = NavigationRoute.AddTransaction.withoutArgs.route)
-            }) {
-                Icon(imageVector = Icons.Default.AddCircle, contentDescription = "")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        )
-        {
-
-            items(state.transactions) { item ->
-                TransactionItem(
-                    transaction = item
-                )
-            }
-
-        }
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun DefaultDashboardScreen() {
-    AppTheme {
-    }
+    HeaderSection()
 }

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="Theme.PeraWatcher" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="Theme.PeraWatcher" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/md_theme_dark_onPrimary</item>
 
 <!--        <item name="colorPrimary">@color/md_theme_dark_primary</item>-->
@@ -33,7 +33,7 @@
 <!--        <item name="colorPrimaryInverse">@color/md_theme_dark_inversePrimary</item>-->
     </style>
 
-    <style name="Custom.Chip" parent="Widget.Material3.Chip.Filter">
+    <style name="Custom.Chip" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
@@ -41,7 +41,7 @@
 
     </style>
 
-    <style name="Custom.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+    <style name="Custom.Chip.Assist" parent="Widget.MaterialComponents.Chip.Action">
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
@@ -49,7 +49,7 @@
     </style>
 
 
-    <style name="Custom.Chip.Text.Appearance" parent="TextAppearance.Material3.BodySmall">
+    <style name="Custom.Chip.Text.Appearance" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/poppins_family</item>
         <item name="android:fontFamily">@font/poppins_family</item>
     </style>

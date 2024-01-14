@@ -1,8 +1,12 @@
 package com.creativegrpcx.perawatcher.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,7 +39,9 @@ fun WalletItem(
 ) {
 
     Card(
-        Modifier.wrapContentHeight(),
+        Modifier
+            .wrapContentHeight()
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         )
@@ -50,17 +56,19 @@ fun WalletItem(
                 fontWeight = FontWeight.Medium,
                 icon = ImageVector.vectorResource(id = R.drawable.ic_baseline_chevron_right_24))
 
+            Spacer(modifier = Modifier.size(16.dp))
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 fontSize = 12.sp,
-                text = "Available Balance")
+                text = "Balance")
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 text = wallet.formatWalletAmount
             )
         }

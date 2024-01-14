@@ -1,106 +1,122 @@
 package com.creativegrpcx.perawatcher.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.creativegrpcx.perawatcher.ui.components.TransactionItem
-import com.creativegrpcx.perawatcher.ui.shared.TextIcon
-import com.creativegrpcx.perawatcher.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.creativegrpcx.perawatcher.ui.components.ActivityItem
+import com.creativegrpcx.perawatcher.data.repository.entities.Transaction
+import com.creativegrpcx.perawatcher.domain.types.CategoryType
 import com.creativegrpcx.perawatcher.domain.viewmodel.HistoryViewModel
-import com.creativegrpcx.perawatcher.ui.theme.AppTheme
-import com.creativegrpcx.perawatcher.ui.utils.formatDecimalSeparator
+import com.creativegrpcx.perawatcher.ui.components.ExpensesItem
+import com.creativegrpcx.perawatcher.ui.components.TransactionItemHeader
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryScreen(
-    viewModel: HistoryViewModel?
+    id: Int = 3,
 ) {
-//    viewModel?.loadHistoryScreen()
+    val viewModel: HistoryViewModel = hiltViewModel()
 
-    val state = viewModel?.historyState?.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.Start,
-    ) {
-        Text(
-            text = "Overall Expenses",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium
-        )
-        Text(
-            text = "$${state?.value?.overAllExpenses?.formatDecimalSeparator()}",
-            fontSize = 32.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
+    Column {
+        TabSection()
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(
+                top = 8.dp,
+                bottom = 8.dp
+            )
         )
         {
 
-            state?.value?.groupTransactions?.let {
-                it.forEach { (category, list) ->
+            item {
+                TransactionItemHeader()
+            }
 
-                    stickyHeader {
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.background)
-                        ) {
-                            TextIcon(
-                                text = category.capitalize(),
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Start,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight(),
-                                icon = ImageVector
-                                    .vectorResource(id = R.drawable.ic_baseline_more_horiz_24)
+            items(2) {
+                ExpensesItem(
+                    transaction = Transaction(
+                        title = "Compose test",
+                        category = CategoryType.Bills,
+                        amount = "122.00",
+                        date = "2022-08-03",
+                        time = "14:56:00",
+                        walletId = "1234"
+                    )
+                )
+            }
 
-                            ) {
+            item {
+                TransactionItemHeader()
+            }
 
-                            }
-                        }
-                    }
+            items(5) {
+                ExpensesItem(
+                    transaction = Transaction(
+                        title = "Compose test",
+                        category = CategoryType.Bills,
+                        amount = "122.00",
+                        date = "2022-08-03",
+                        time = "14:56:00",
+                        walletId = "1234"
+                    )
+                )
+            }
 
-                    items(list) { transaction ->
-                        TransactionItem(
-                            transaction = transaction
-                        )
-                    }
-                }
+            item {
+                TransactionItemHeader()
+            }
 
+            items(3) {
+                ExpensesItem(
+                    transaction = Transaction(
+                        title = "Compose test",
+                        category = CategoryType.Bills,
+                        amount = "122.00",
+                        date = "2022-08-03",
+                        time = "14:56:00",
+                        walletId = "1234"
+                    )
+                )
             }
         }
+     }
 
+}
+
+@Composable
+private fun TabSection() {
+    val tabs = listOf("Expenses", "Savings")
+    var tabsState by remember { mutableIntStateOf(0) }
+
+    TabRow(
+        selectedTabIndex = tabsState,
+    ) {
+        tabs.forEachIndexed { index, title ->
+            Tab(
+                selected = index == tabsState,
+                onClick = { tabsState = index },
+                text = { Text(text = title) }
+            )
+        }
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun DefaultHistoryScreen() {
-    AppTheme() {
-        HistoryScreen(viewModel = null)
-    }
+    TabSection()
 }

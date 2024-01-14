@@ -8,10 +8,14 @@ import com.creativegrpcx.perawatcher.domain.model.state.AddTransactionState
 import com.creativegrpcx.perawatcher.domain.model.state.transformToTransaction
 import com.creativegrpcx.perawatcher.domain.utils.AddTransactionEvent
 import com.creativegrpcx.perawatcher.domain.utils.Response
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddTransactionViewModel(
+@HiltViewModel
+class AddTransactionViewModel @Inject constructor(
     application: Application,
     private val repository: DataRepository
 ) : AndroidViewModel(application) {

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.creativegrpcx.perawatcher.ui.components.ChipVerticalGrid
 import com.creativegrpcx.perawatcher.ui.utils.Constants
 import com.creativegrpcx.perawatcher.domain.types.WalletType
@@ -30,13 +31,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.creativegrpcx.perawatcher.domain.utils.AddWalletEvent
 import com.creativegrpcx.perawatcher.domain.viewmodel.AddWalletViewModel
 import com.creativegrpcx.perawatcher.ui.utils.Constants.TextFieldTitle
+import com.ramcosta.composedestinations.annotation.Destination
 
+@Destination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview(showBackground = true)
 fun AddWalletScreen(
-    viewModel: AddWalletViewModel = viewModel()
+    id: Int = 6,
 ) {
+
+    val viewModel: AddWalletViewModel = hiltViewModel()
 
     val scrollState = rememberScrollState()
     val state = viewModel.addWalletState.collectAsState()
@@ -57,9 +62,6 @@ fun AddWalletScreen(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.value.walletName,
-            label = {
-                TextFieldTextPlaceHolder(text = "Put the title here")
-            },
             onValueChange = {
                 viewModel.onAddWalletEventHandler(AddWalletEvent.TitleChange(it))
             },
@@ -117,9 +119,6 @@ fun AddWalletScreen(
             value = state.value.walletAmount,
             onValueChange = { value ->
                 viewModel.onAddWalletEventHandler(AddWalletEvent.AmountChange(value))
-            },
-            label = {
-                TextFieldTextPlaceHolder(text = "Put the amount here")
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(),
             keyboardOptions = KeyboardOptions(

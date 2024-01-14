@@ -6,13 +6,6 @@
     >
 
     <!-- TODO: Update blank fragment layout -->
-    <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-        android:id="@+id/fragment_statistics_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-    </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
 
 
 

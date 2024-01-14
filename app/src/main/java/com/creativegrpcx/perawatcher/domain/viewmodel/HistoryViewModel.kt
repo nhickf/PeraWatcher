@@ -8,10 +8,13 @@ import com.creativegrpcx.perawatcher.domain.data.DataRepository
 import com.creativegrpcx.perawatcher.domain.model.state.HistoryState
 import com.creativegrpcx.perawatcher.domain.utils.Response
 import com.creativegrpcx.perawatcher.ui.utils.removeComma
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HistoryViewModel (
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
     application: Application,
     private val repository: DataRepository
 ) : AndroidViewModel(application)  {

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PeraWatcher" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.PeraWatcher" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:statusBarColor">@color/md_theme_light_onPrimary</item>
 
@@ -43,26 +43,26 @@
     <!--        <item name="boxStrokeColor">@color/blue_grey_level_2</item>-->
     <!--    </style>-->
 
-    <style name="Custom.Chip" parent="Widget.Material3.Chip.Filter">
+    <style name="Custom.Chip" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
         <item name="chipIconTint">?attr/colorControlNormal</item>
     </style>
 
-    <style name="Custom.Chip.Assist" parent="Widget.Material3.Chip.Assist">
+    <style name="Custom.Chip.Assist" parent="Widget.MaterialComponents.Chip.Action">
         <item name="minHeight">24dp</item>
         <item name="android:textAppearance">@style/Custom.Chip.Text.Appearance</item>
         <item name="checkedIconVisible">false</item>
         <item name="chipIconTint">?attr/colorControlNormal</item>
     </style>
 
-    <style name="Custom.Chip.Text.Appearance" parent="TextAppearance.Material3.BodySmall">
+    <style name="Custom.Chip.Text.Appearance" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">@font/poppins_family</item>
         <item name="android:fontFamily">@font/poppins_family</item>
     </style>
 
-    <style name="CalenderViewCustom" parent="ThemeOverlay.Material3.Dialog">
+    <style name="CalenderViewCustom" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="colorAccent">@color/md_theme_light_tertiary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorSurface">@color/md_theme_light_surface</item>

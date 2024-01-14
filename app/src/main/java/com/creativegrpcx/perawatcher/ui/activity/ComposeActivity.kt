@@ -5,35 +5,29 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.creativegrpcx.perawatcher.MainApplication
-import com.creativegrpcx.perawatcher.domain.viewmodel.GlobalViewModelFactory
-import com.creativegrpcx.perawatcher.ui.components.ApplicationHeader
-import com.creativegrpcx.perawatcher.ui.nav.ApplicationRoute
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.creativegrpcx.perawatcher.ui.nav.BottomNavigationBar
+import com.creativegrpcx.perawatcher.ui.screens.NavGraphs
 import com.creativegrpcx.perawatcher.ui.theme.AppTheme
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import javax.inject.Inject
+import com.ramcosta.composedestinations.DestinationsNavHost
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ComposeActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var globalViewModelFactory: GlobalViewModelFactory
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MainApplication).component.inject(this)
         super.onCreate(savedInstanceState)
 
         try {
             setContent {
                 AppTheme {
-                    MainScreen(
-                        globalViewModelFactory
-                    )
+                    MainScreen()
                 }
             }
         } catch (e: Exception) {
@@ -42,13 +36,9 @@ class ComposeActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen(
-    factory: GlobalViewModelFactory,
-) {
-    val navigationController = rememberAnimatedNavController()
+fun MainScreen() {
+    val navigationController = rememberNavController()
     val snackbarHostState = remember {
         SnackbarHostState()
     }
@@ -56,21 +46,24 @@ fun MainScreen(
     // A surface container using the 'background' color from the theme
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            ApplicationHeader(
-                navigation = navigationController,
-            )
-        },
+        modifier = Modifier
+            .fillMaxSize(),
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navigationController)
         }
     ) {
-        ApplicationRoute(
-            factory = factory,
-            padding = it,
-            navHostController = navigationController
+        DestinationsNavHost(
+            navController = navigationController,
+            navGraph = NavGraphs.root,
+            modifier = Modifier.padding(
+                top = 16.dp,
+                bottom = it.calculateBottomPadding(),
+                start = 16.dp,
+                end = 16.dp
+            )
         )
     }
 }

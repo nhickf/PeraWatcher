@@ -1,9 +1,6 @@
 package com.creativegrpcx.perawatcher.ui.shared
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -13,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -23,10 +21,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.creativegrpcx.perawatcher.R
-import com.creativegrpcx.perawatcher.ui.components.WalletItem
 
 @Composable
 fun TextIcon(
@@ -58,22 +54,22 @@ fun TextIcon(
     ) {
         Text(
             text = text,
-            modifier
+            modifier = modifier
                 .weight(1f),
-            color,
-            fontSize,
-            fontStyle,
-            fontWeight,
-            fontFamily,
-            letterSpacing,
-            textDecoration,
-            textAlign,
-            lineHeight,
-            overflow,
-            softWrap,
-            maxLines,
-            onTextLayout,
-            style
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            fontFamily = fontFamily,
+            letterSpacing = letterSpacing,
+            textDecoration = textDecoration,
+            textAlign = textAlign,
+            lineHeight = lineHeight,
+            overflow = overflow,
+            softWrap = softWrap,
+            maxLines = maxLines,
+            onTextLayout = onTextLayout,
+            style = style
         )
 
             Icon(

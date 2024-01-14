@@ -8,13 +8,16 @@ import com.creativegrpcx.perawatcher.domain.data.DataRepository
 import com.creativegrpcx.perawatcher.domain.model.state.AddWalletState
 import com.creativegrpcx.perawatcher.domain.model.state.ErrorState
 import com.creativegrpcx.perawatcher.domain.utils.AddWalletEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
+import javax.inject.Inject
 
-class AddWalletViewModel(
+@HiltViewModel
+class AddWalletViewModel @Inject constructor(
     application: Application,
     private val repository: DataRepository
 ) : AndroidViewModel(application) {
